@@ -15,19 +15,20 @@ export class OpenAIProvider implements AIProvider {
     brief: CreativeBrief
   ): Promise<CreativeAsset> {
 
-    //------------------------------------------
-    // Build FormData
-    //------------------------------------------
-
     const formData = new FormData();
+
+    //------------------------------------------
+    // Add Creative Brief
+    //------------------------------------------
 
     formData.append(
       "brief",
-      JSON.stringify({
-        ...brief,
-        productImage: undefined,
-      })
+      JSON.stringify(brief)
     );
+
+    //------------------------------------------
+    // Add Product Image
+    //------------------------------------------
 
     if (brief.productImage) {
 
@@ -39,7 +40,7 @@ export class OpenAIProvider implements AIProvider {
     }
 
     //------------------------------------------
-    // Call API
+    // Send Request
     //------------------------------------------
 
     const response =

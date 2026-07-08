@@ -39,13 +39,11 @@ export async function POST(request: NextRequest) {
     // Parse FormData
     //------------------------------------------
 
-    const formData =
-      await request.formData();
+    const formData = await request.formData();
 
-    const briefJson =
-      formData.get("brief");
+    const briefString = formData.get("brief");
 
-    if (typeof briefJson !== "string") {
+    if (typeof briefString !== "string") {
 
       return NextResponse.json(
         {
@@ -53,22 +51,20 @@ export async function POST(request: NextRequest) {
           requestId,
           error: "CreativeBrief is required.",
         },
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
 
     }
 
     const brief =
-      JSON.parse(briefJson) as CreativeBrief;
+      JSON.parse(briefString) as CreativeBrief;
 
     //------------------------------------------
     // Uploaded Product Image
     //------------------------------------------
 
     const productImage =
-      formData.get("productImage") as File | null;
+      formData.get("productImage");
 
     //------------------------------------------
     // Logging
@@ -85,7 +81,11 @@ export async function POST(request: NextRequest) {
     console.log(`Platform: ${brief.platform}`);
     console.log(`Placement: ${brief.placement}`);
     console.log(`Strategy: ${brief.strategy}`);
-    console.log(`Image Uploaded: ${productImage ? "Yes" : "No"}`);
+    console.log(
+      `Product Image Uploaded: ${
+        productImage instanceof File ? "YES" : "NO"
+      }`
+    );
 
     //------------------------------------------
     // Generate Image
@@ -94,25 +94,24 @@ export async function POST(request: NextRequest) {
     const asset =
       await openAIImageService.generateImage(
         brief,
-        productImage
+        productImage instanceof File
+          ? productImage
+          : null
       );
 
     //------------------------------------------
     // Complete
     //------------------------------------------
 
-    console.log(
-      `Completed in ${Date.now() - startTime}ms`
-    );
+    const elapsed =
+      Date.now() - startTime;
+
+    console.log(`Completed in ${elapsed}ms`);
 
     return NextResponse.json({
-
       success: true,
-
       requestId,
-
       asset,
-
     });
 
   } catch (error) {
@@ -128,9 +127,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-
         requestId,
-
         error:
           error instanceof Error
             ? error.message

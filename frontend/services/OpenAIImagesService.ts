@@ -16,8 +16,30 @@ export class OpenAIImageService {
   //------------------------------------------
 
   async generateImage(
-    brief: CreativeBrief
+    brief: CreativeBrief,
+    productImage: File | null
   ): Promise<CreativeAsset> {
+
+    //------------------------------------------
+    // Verify Product Upload
+    //------------------------------------------
+
+    console.log("");
+    console.log("=====================================");
+    console.log("EmmaOS Product Upload");
+    console.log("=====================================");
+
+    if (productImage) {
+
+      console.log("Filename:", productImage.name);
+      console.log("Type:", productImage.type);
+      console.log("Size:", productImage.size, "bytes");
+
+    } else {
+
+      console.log("No product image received.");
+
+    }
 
     //------------------------------------------
     // Compose Prompt
@@ -26,14 +48,24 @@ export class OpenAIImageService {
     const prompt =
       composeImagePrompt(brief);
 
+    console.log("");
+    console.log("=====================================");
+    console.log("EmmaOS Prompt");
+    console.log("=====================================");
+    console.log(prompt);
+
     //------------------------------------------
-    // Call OpenAI Images API
+    // Temporary Image Generation
+    //
+    // NOTE:
+    // This still uses text generation only.
+    // The next milestone replaces this with
+    // reference-image generation.
     //------------------------------------------
 
     const response =
       await client.images.generate({
 
-        // Recommended production model
         model: "gpt-image-1",
 
         prompt,
@@ -47,17 +79,6 @@ export class OpenAIImageService {
     //------------------------------------------
     // Extract Image
     //------------------------------------------
-
-    /**
-     * NOTE:
-     *
-     * gpt-image-1 returns base64 image data.
-     *
-     * For now we'll store it as a data URL.
-     *
-     * Later we'll upload it to cloud storage
-     * (S3, Azure, Cloudflare R2, etc.)
-     */
 
     const base64 =
       response.data?.[0]?.b64_json;
@@ -74,7 +95,7 @@ export class OpenAIImageService {
       `data:image/png;base64,${base64}`;
 
     //------------------------------------------
-    // Creative Asset
+    // Build Asset
     //------------------------------------------
 
     return {
