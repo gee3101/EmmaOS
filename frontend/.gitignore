@@ -20,6 +20,12 @@
 # production
 /build
 
+# local environment
+.env.local
+.env*.local
+
+# logs
+*.log
 # misc
 .DS_Store
 *.pem

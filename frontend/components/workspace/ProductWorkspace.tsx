@@ -5,7 +5,7 @@ import { useProducts } from "../../hooks/useProducts";
 import ImportButton from "../buttons/ImportButton";
 import StatusCards from "../cards/StatusCards";
 import ProductQueue from "./ProductQueue";
-import ProductDetails from "../panels/ProductDetails";
+import MarketingWorkspace from "../panels/MarketingWorkspace";
 
 export default function ProductWorkspace() {
   const {
@@ -21,25 +21,32 @@ export default function ProductWorkspace() {
 
     importedCount,
     processedCount,
+    pendingCount,
   } = useProducts();
 
   return (
-    <main className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-slate-100">
       <div className="mx-auto max-w-7xl space-y-6 p-6">
 
-        {/* Header */}
+        {/* ======================================
+            Header
+        ====================================== */}
 
-        <header>
-          <h1 className="text-3xl font-bold text-slate-900">
+        <div>
+
+          <h1 className="text-4xl font-bold text-slate-900">
             EmmaOS
           </h1>
 
           <p className="mt-1 text-slate-600">
             AI Marketing Operating System
           </p>
-        </header>
 
-        {/* Toolbar */}
+        </div>
+
+        {/* ======================================
+            Import Controls
+        ====================================== */}
 
         <ImportButton
           onImport={addProducts}
@@ -49,42 +56,43 @@ export default function ProductWorkspace() {
           hasProcessedProducts={products.length > 0}
         />
 
-        {/* Dashboard */}
+        {/* ======================================
+            Dashboard
+        ====================================== */}
 
         <StatusCards
-          totalProducts={importedCount}
-          processedProducts={processedCount}
+          imported={importedCount}
+          processed={processedCount}
+          pending={pendingCount}
         />
 
-        {/* Workspace */}
+        {/* ======================================
+            Workspace
+        ====================================== */}
 
-        <section className="grid grid-cols-12 gap-6">
+        <div className="grid grid-cols-3 gap-6">
 
-          {/* Product Queue */}
-
-          <aside className="col-span-4">
+          <div className="col-span-1">
 
             <ProductQueue
               products={products}
               selectedProduct={selectedProduct}
-              onSelect={setSelectedProduct}
+              onSelectProduct={setSelectedProduct}
             />
 
-          </aside>
+          </div>
 
-          {/* Emma Intelligence */}
+          <div className="col-span-2">
 
-          <section className="col-span-8">
-
-            <ProductDetails
+            <MarketingWorkspace
               product={selectedProduct}
             />
 
-          </section>
+          </div>
 
-        </section>
+        </div>
 
       </div>
-    </main>
+    </div>
   );
 }

@@ -4,14 +4,24 @@ import { buildKnowledge } from "../builders/knowledgeBuilder";
 import { identifyProduct } from "./identityEngine";
 import { generateStory } from "./storyEngine";
 import { generateCampaign } from "./campaignEngine";
+import { generateStrategies } from "./strategyEngine";
 
 import { Campaign } from "../types/Campaign";
+import { CampaignStrategy } from "../types/CampaignStrategy";
 
 export interface ProcessedProduct extends Product {
+  //------------------------------------------
+  // Identity
+  //------------------------------------------
+
   relationship: string;
   occasion: string;
   emotion: string;
   giftType: string;
+
+  //------------------------------------------
+  // Story Intelligence
+  //------------------------------------------
 
   audience: string;
   painPoint: string;
@@ -24,7 +34,17 @@ export interface ProcessedProduct extends Product {
   headline: string;
   callToAction: string;
 
+  //------------------------------------------
+  // Campaign
+  //------------------------------------------
+
   campaign: Campaign;
+
+  //------------------------------------------
+  // Strategy Engine
+  //------------------------------------------
+
+  strategies: CampaignStrategy[];
 }
 
 export function processProducts(
@@ -33,17 +53,19 @@ export function processProducts(
 
   return products.map((product) => {
 
-    //----------------------------------
-    // Knowledge
-    //----------------------------------
+    //------------------------------------------
+    // Knowledge Builder
+    //------------------------------------------
 
-    const knowledge = buildKnowledge(product);
+    const knowledge =
+      buildKnowledge(product);
 
-    //----------------------------------
-    // Identity
-    //----------------------------------
+    //------------------------------------------
+    // Identity Engine
+    //------------------------------------------
 
-    const identity = identifyProduct(product);
+    const identity =
+      identifyProduct(product);
 
     knowledge.relationship = identity.relationship;
     knowledge.occasion = identity.occasion;
@@ -51,30 +73,47 @@ export function processProducts(
     knowledge.giftType = identity.giftType;
     knowledge.confidence = identity.confidence;
 
-    //----------------------------------
-    // Story
-    //----------------------------------
+    //------------------------------------------
+    // Story Engine
+    //------------------------------------------
 
-    const story = generateStory(knowledge);
+    const story =
+      generateStory(knowledge);
 
-    //----------------------------------
-    // Campaign
-    //----------------------------------
+    //------------------------------------------
+    // Campaign Engine
+    //------------------------------------------
 
-    const campaign = generateCampaign(story);
+    const campaign =
+      generateCampaign(story);
 
-    //----------------------------------
-    // Return
-    //----------------------------------
+    //------------------------------------------
+    // Strategy Engine
+    //------------------------------------------
+
+    const strategies =
+      generateStrategies(story);
+
+    //------------------------------------------
+    // Final Product
+    //------------------------------------------
 
     return {
 
       ...product,
 
+      //--------------------------------------
+      // Identity
+      //--------------------------------------
+
       relationship: identity.relationship,
       occasion: identity.occasion,
       emotion: identity.emotion,
       giftType: identity.giftType,
+
+      //--------------------------------------
+      // Story
+      //--------------------------------------
 
       audience: story.audience,
       painPoint: story.painPoint,
@@ -87,7 +126,17 @@ export function processProducts(
       headline: story.headline,
       callToAction: story.callToAction,
 
+      //--------------------------------------
+      // Campaign
+      //--------------------------------------
+
       campaign,
+
+      //--------------------------------------
+      // Strategies
+      //--------------------------------------
+
+      strategies,
 
     };
 

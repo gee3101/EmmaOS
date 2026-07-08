@@ -31,6 +31,8 @@ export default function ImportButton({
     event: ChangeEvent<HTMLInputElement>
   ) {
 
+    console.log("EmmaOS: File selected");
+
     const file = event.target.files?.[0];
 
     if (!file) return;
@@ -40,6 +42,8 @@ export default function ImportButton({
       setImporting(true);
 
       const products = await parseShopifyCSV(file);
+
+      console.log("EmmaOS: Parsed", products.length, "products");
 
       onImport(products);
 
@@ -66,7 +70,10 @@ export default function ImportButton({
       <div className="flex flex-wrap gap-3">
 
         <button
-          onClick={() => fileInput.current?.click()}
+          onClick={() => {
+            console.log("EmmaOS: Import button clicked");
+            fileInput.current?.click();
+          }}
           disabled={importing}
           className="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
         >
