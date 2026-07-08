@@ -2,11 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import {
-  CreativeBrief,
-  CreativePlatform,
-  CreativePlacement,
-} from "../../types/CreativeBrief";
+import { CreativeBrief } from "../../types/CreativeBrief";
 
 import { CreativeAsset } from "../../types/CreativeAsset";
 
@@ -97,10 +93,10 @@ export default function CreativeStudio({
         ...brief,
 
         platform:
-          placement.platform as CreativePlatform,
+          placement.platform,
 
         placement:
-          placement.placement as CreativePlacement,
+          placement.placement,
 
         productImage,
 

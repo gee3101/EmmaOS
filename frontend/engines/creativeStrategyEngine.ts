@@ -1,72 +1,46 @@
-export interface CreativeBrief {
+export interface CreativeStrategy {
 
   //------------------------------------------
-  // Product
+  // Identity
   //------------------------------------------
 
-  productTitle: string;
+  title: string;
 
   description: string;
 
-  productImage: File | null;
-
   //------------------------------------------
-  // Emma Intelligence
+  // Buyer Psychology
   //------------------------------------------
 
-  relationship: string;
-
-  occasion: string;
-
-  emotion: string;
-
-  giftType: string;
-
-  audience: string;
+  buyerPersona: string;
 
   painPoint: string;
 
   desire: string;
 
-  fear: string;
+  objection: string;
 
-  motivation: string;
-
-  story: string;
+  emotionalTrigger: string;
 
   //------------------------------------------
   // Marketing
   //------------------------------------------
 
-  marketingAngle: string;
+  campaignTheme: string;
+
+  hook: string;
 
   headline: string;
+
+  primaryText: string;
 
   callToAction: string;
 
   //------------------------------------------
-  // Strategy
+  // Story
   //------------------------------------------
 
-  strategy: string;
-
-  buyerPersona: string;
-
-  campaignTheme: string;
-
-  emotionalTrigger: string;
-
-  hook: string;
-
-  //------------------------------------------
-  // Campaign
-  //------------------------------------------
-
-  platform: string;
-
-  placement: string;
-
-  objective: string;
+  storyArc: string[];
 
   //------------------------------------------
   // Creative Direction
@@ -81,11 +55,15 @@ export interface CreativeBrief {
   mood: string;
 
   //------------------------------------------
-  // Prompt Generation
+  // Platform Ideas
   //------------------------------------------
 
-  imagePrompt: string;
+  facebookConcept: string;
 
-  videoPrompt: string;
+  instagramConcept: string;
+
+  pinterestConcept: string;
+
+  tiktokConcept: string;
 
 }

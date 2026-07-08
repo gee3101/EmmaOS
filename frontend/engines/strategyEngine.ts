@@ -20,6 +20,11 @@ export function generateStrategies(
       objective: "Create an emotional connection",
       targetAudience: story.audience,
 
+      buyerPersona: story.audience,
+      campaignTheme: "Emotional Connection",
+      emotionalTrigger: story.marketingAngle,
+      hook: story.headline,
+
       facebookPrimaryText:
 `${story.story}
 
@@ -38,6 +43,18 @@ story.headline,
 `${story.story}
 
 ${story.callToAction}`,
+
+      visualConcept:
+"Heartfelt product lifestyle scene",
+
+      environment:
+"Warm family home",
+
+      lighting:
+"Soft golden-hour lighting",
+
+      mood:
+"Emotional",
 
       imagePrompt:
 `Warm emotional family moment celebrating ${story.relationship.toLowerCase()}.`,
@@ -62,6 +79,11 @@ story.callToAction,
       objective: "Drive immediate purchases",
       targetAudience: story.audience,
 
+      buyerPersona: story.audience,
+      campaignTheme: "Limited Time",
+      emotionalTrigger: "Fear of Missing Out",
+      hook: "Limited Time Offer",
+
       facebookPrimaryText:
 `Don't wait until the last minute.
 
@@ -82,6 +104,18 @@ ${story.callToAction}`,
 `Time is running out.
 
 ${story.callToAction}`,
+
+      visualConcept:
+"Product beside countdown timer",
+
+      environment:
+"Modern product display",
+
+      lighting:
+"Bright dramatic lighting",
+
+      mood:
+"Urgent",
 
       imagePrompt:
 "Countdown timer beside a beautifully wrapped gift.",
@@ -106,6 +140,11 @@ ${story.callToAction}`,
       objective: "Tell a memorable story",
       targetAudience: story.audience,
 
+      buyerPersona: story.audience,
+      campaignTheme: "Meaningful Memories",
+      emotionalTrigger: "Nostalgia",
+      hook: "Every Gift Has A Story",
+
       facebookPrimaryText:
 `Every family has moments that last forever.
 
@@ -122,6 +161,18 @@ Today's gift becomes tomorrow's memory.`,
 
       emailBody:
 `Some gifts are remembered forever because of the story behind them.`,
+
+      visualConcept:
+"Nostalgic family memory",
+
+      environment:
+"Family living room",
+
+      lighting:
+"Warm cinematic lighting",
+
+      mood:
+"Nostalgic",
 
       imagePrompt:
 "A nostalgic family memory with soft lighting.",
@@ -146,6 +197,11 @@ Today's gift becomes tomorrow's memory.`,
       objective: "Build credibility",
       targetAudience: story.audience,
 
+      buyerPersona: story.audience,
+      campaignTheme: "Customer Favorite",
+      emotionalTrigger: "Trust",
+      hook: "Thousands Love This Gift",
+
       facebookPrimaryText:
 `Thousands of families have chosen gifts like this to celebrate the people they love.`,
 
@@ -160,6 +216,18 @@ Today's gift becomes tomorrow's memory.`,
 
       emailBody:
 `Join thousands of happy customers.`,
+
+      visualConcept:
+"Happy customer lifestyle",
+
+      environment:
+"Customer homes",
+
+      lighting:
+"Natural daylight",
+
+      mood:
+"Trustworthy",
 
       imagePrompt:
 "Happy customers sharing heartfelt gift moments.",
@@ -184,6 +252,11 @@ Today's gift becomes tomorrow's memory.`,
       objective: "Increase perceived value",
       targetAudience: story.audience,
 
+      buyerPersona: story.audience,
+      campaignTheme: "Luxury",
+      emotionalTrigger: "Prestige",
+      hook: "Luxury They'll Treasure Forever",
+
       facebookPrimaryText:
 `Crafted to become a treasured keepsake for generations.`,
 
@@ -198,6 +271,18 @@ Today's gift becomes tomorrow's memory.`,
 
       emailBody:
 `Exceptional quality meets unforgettable meaning.`,
+
+      visualConcept:
+"Premium luxury product showcase",
+
+      environment:
+"Elegant studio",
+
+      lighting:
+"High-end dramatic lighting",
+
+      mood:
+"Luxury",
 
       imagePrompt:
 "Luxury jewelry displayed in elegant lighting.",
@@ -222,6 +307,11 @@ Today's gift becomes tomorrow's memory.`,
       objective: "Create engagement",
       targetAudience: story.audience,
 
+      buyerPersona: story.audience,
+      campaignTheme: "Fun",
+      emotionalTrigger: "Joy",
+      hook: "The Gift They Secretly Wanted",
+
       facebookPrimaryText:
 `They said they didn't want anything.
 
@@ -238,6 +328,18 @@ We both knew that wasn't true.`,
 
       emailBody:
 `Start with a smile. End with happy tears.`,
+
+      visualConcept:
+"Family laughing together",
+
+      environment:
+"Gift exchange",
+
+      lighting:
+"Bright cheerful lighting",
+
+      mood:
+"Joyful",
 
       imagePrompt:
 "Family laughing together while exchanging gifts.",

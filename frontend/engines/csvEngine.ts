@@ -1,59 +1,126 @@
-import Papa from "papaparse";
+import Papa, { ParseResult } from "papaparse";
 import { Product } from "../types/Product";
 
-export function parseShopifyCSV(file: File): Promise<Product[]> {
+export function parseShopifyCSV(
+  file: File
+): Promise<Product[]> {
+
   return new Promise((resolve, reject) => {
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
 
-      complete(results) {
-        try {
-          const rows = results.data as Record<string, string>[];
+    const reader = new FileReader();
 
-          const productMap = new Map<string, Product>();
+    reader.onload = () => {
 
-          rows.forEach((row) => {
-            const handle = row["Handle"] || "";
+      const csv = reader.result;
 
-            // Skip duplicate variants
-            if (productMap.has(handle)) return;
+      if (typeof csv !== "string") {
+        reject(new Error("Unable to read CSV file."));
+        return;
+      }
 
-            productMap.set(handle, {
-              title: row["Title"] || "",
-              handle,
-              vendor: row["Vendor"] || "",
-              productType:
-                row["Product Category"] ||
-                row["Type"] ||
-                "",
-              price:
-                row["Variant Price"] ||
-                row["Variant Price / International"] ||
-                "",
-              image:
-                row["Image Src"] ||
-                row["Image URL"] ||
-                "",
-              status: "Ready",
+      try {
 
-              description: row["Body (HTML)"] || "",
-              tags: row["Tags"] || "",
-              collections: row["Collection"] || "",
+        Papa.parse<Record<string, string>>(csv, {
 
-              processed: false,
+          header: true,
+
+          skipEmptyLines: true,
+
+          complete(results: ParseResult<Record<string, string>>) {
+
+            const productMap =
+              new Map<string, Product>();
+
+            results.data.forEach((row) => {
+
+              const handle =
+                row["Handle"] || "";
+
+              //----------------------------------
+              // Skip duplicate variants
+              //----------------------------------
+
+              if (productMap.has(handle)) {
+                return;
+              }
+
+              productMap.set(handle, {
+
+                //----------------------------------
+                // Shopify Fields
+                //----------------------------------
+
+                title:
+                  row["Title"] || "",
+
+                vendor:
+                  row["Vendor"] || "",
+
+                price:
+                  row["Variant Price"] ||
+                  row["Variant Price / International"] ||
+                  "",
+
+                description:
+                  row["Body (HTML)"] || "",
+
+                productType:
+                  row["Product Category"] ||
+                  row["Type"] ||
+                  "",
+
+                tags:
+                  row["Tags"] || "",
+
+                sku:
+                  row["Variant SKU"] || "",
+
+                handle,
+
+                //----------------------------------
+                // Emma Intelligence
+                //----------------------------------
+
+                relationship: "",
+
+                occasion: "",
+
+                emotion: "",
+
+                giftType: "",
+
+                confidence: 0,
+
+              });
+
             });
-          });
 
-          resolve(Array.from(productMap.values()));
-        } catch (err) {
-          reject(err);
-        }
-      },
+            resolve(
+              Array.from(productMap.values())
+            );
 
-      error(err) {
+          },
+
+        });
+
+      } catch (err) {
+
         reject(err);
-      },
-    });
+
+      }
+
+    };
+
+    reader.onerror = () => {
+
+      reject(
+        new Error("Failed to read CSV file.")
+      );
+
+    };
+
+    reader.readAsText(file);
+
   });
+
 }

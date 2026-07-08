@@ -77,7 +77,7 @@ export default function ProductWorkspace() {
             <ProductQueue
               products={products}
               selectedProduct={selectedProduct}
-              onSelectProduct={setSelectedProduct}
+              onSelect={setSelectedProduct}
             />
 
           </div>

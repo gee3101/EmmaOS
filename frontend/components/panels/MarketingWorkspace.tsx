@@ -28,19 +28,6 @@ export default function ProductDetails({
     useState("intelligence");
 
   //------------------------------------------
-  // Reset tab when product changes
-  //------------------------------------------
-
-  // Optional: Uncomment if you want every newly
-  // selected product to start on Intelligence.
-
-  /*
-  useEffect(() => {
-    setActiveTab("intelligence");
-  }, [product]);
-  */
-
-  //------------------------------------------
   // Tabs
   //------------------------------------------
 
@@ -100,6 +87,12 @@ export default function ProductDetails({
   }
 
   //------------------------------------------
+  // Product is guaranteed beyond this point
+  //------------------------------------------
+
+  const activeProduct: ProcessedProduct = product;
+
+  //------------------------------------------
   // Active View
   //------------------------------------------
 
@@ -110,28 +103,28 @@ export default function ProductDetails({
       case "facebook":
         return (
           <FacebookView
-            product={product}
+            product={activeProduct}
           />
         );
 
       case "email":
         return (
           <EmailView
-            product={product}
+            product={activeProduct}
           />
         );
 
       case "prompts":
         return (
           <AIPromptsView
-            product={product}
+            product={activeProduct}
           />
         );
 
       case "strategies":
         return (
           <StrategiesView
-            product={product}
+            product={activeProduct}
           />
         );
 
@@ -140,7 +133,7 @@ export default function ProductDetails({
       default:
         return (
           <IntelligenceView
-            product={product}
+            product={activeProduct}
           />
         );
 

@@ -6,116 +6,170 @@ export function composeImagePrompt(
 
   return `
 
+====================================================
+ROLE
+====================================================
+
 You are an award-winning commercial advertising photographer.
 
-Create a premium Facebook advertisement for the following product.
+Your job is to create a production-ready commercial photograph.
+
+You are NOT a graphic designer.
+
+You are NOT designing a Facebook advertisement.
+
+You are NOT creating marketing graphics.
+
+You are producing premium photography that will later
+be used by a designer.
+
+====================================================
+CRITICAL RULES
+====================================================
+
+Generate ONLY photography.
+
+DO NOT render any text.
+
+DO NOT render headlines.
+
+DO NOT render typography.
+
+DO NOT render logos.
+
+DO NOT render captions.
+
+DO NOT render slogans.
+
+DO NOT render call-to-action buttons.
+
+DO NOT render pricing.
+
+DO NOT render promotional graphics.
+
+DO NOT render watermarks.
+
+The final image must contain ZERO readable text.
+
+Reserve approximately 25% clean negative space in the
+upper-left corner for future advertising copy.
+
+The image should look like it came directly from a
+professional commercial photoshoot BEFORE the designer
+adds copy.
 
 ====================================================
 PRODUCT
 ====================================================
 
-Product:
+Product
+
 ${brief.productTitle}
 
-Description:
+Description
+
 ${brief.description}
 
 ====================================================
 CUSTOMER
 ====================================================
 
-Relationship:
+Relationship
+
 ${brief.relationship}
 
-Occasion:
+Occasion
+
 ${brief.occasion}
 
-Emotion:
+Emotion
+
 ${brief.emotion}
 
-Gift Type:
-${brief.giftType}
+Audience
 
-Audience:
 ${brief.audience}
 
-Pain Point:
-${brief.painPoint}
+====================================================
+CREATIVE DIRECTION
+====================================================
 
-Desire:
-${brief.desire}
+Concept
 
-Fear:
-${brief.fear}
+${brief.visualConcept}
 
-Motivation:
-${brief.motivation}
+Environment
+
+${brief.environment}
+
+Lighting
+
+${brief.lighting}
+
+Mood
+
+${brief.mood}
 
 ====================================================
-STORY
+EMOTIONAL STORY
 ====================================================
 
 ${brief.story}
 
 ====================================================
-MARKETING STRATEGY
+PRODUCT RULES
 ====================================================
 
-Marketing Angle:
-${brief.marketingAngle}
+The product is the hero.
 
-Headline:
-${brief.headline}
+The uploaded product is the source of truth.
 
-Call To Action:
-${brief.callToAction}
+Do not redesign the product.
 
-====================================================
-CAMPAIGN
-====================================================
+Do not change materials.
 
-Platform:
-${brief.platform}
+Do not change colors.
 
-Placement:
-${brief.placement}
+Do not change proportions.
 
-Objective:
-${brief.objective}
+Do not change craftsmanship.
 
-Strategy:
-${brief.strategy}
+Do not simplify details.
+
+Keep the product clearly visible.
+
+Create an authentic emotional moment around the product.
 
 ====================================================
-IMAGE REQUIREMENTS
+PHOTOGRAPHY STYLE
 ====================================================
 
-Create a premium lifestyle advertisement.
-
-The product must remain the hero.
-
-Create an emotionally compelling scene that reflects
-the story above.
+Luxury commercial photography.
 
 Photorealistic.
 
-Commercial quality.
+Professional composition.
 
-Luxury advertising.
+Natural human emotion.
 
-Professional photography.
+Warm cinematic lighting.
 
-Natural lighting.
+Shallow depth of field.
 
-Warm emotional storytelling.
+High-end advertising photography.
 
-Leave clean negative space for advertising copy.
+Magazine-quality image.
 
-Do NOT include text inside the image.
+Elegant color grading.
 
-Do NOT include watermarks.
+Clean background.
 
-Do NOT distort the product.
+Single visual focal point.
+
+Leave generous negative space.
+
+The final result should resemble a premium commercial
+photograph from a luxury advertising agency.
 
 `;
 
@@ -127,64 +181,55 @@ export function composeVideoPrompt(
 
   return `
 
-Create a premium commercial advertising video.
+Create a premium commercial lifestyle video.
 
-====================================================
-PRODUCT
-====================================================
+The final result should feel like a luxury brand commercial.
+
+Product
 
 ${brief.productTitle}
 
+Description
+
 ${brief.description}
 
-====================================================
-CUSTOMER
-====================================================
+Audience
 
-Audience:
 ${brief.audience}
 
-Emotion:
+Emotion
+
 ${brief.emotion}
 
-====================================================
-STORY
-====================================================
+Story
 
 ${brief.story}
 
-====================================================
-MARKETING
-====================================================
+Creative Direction
 
-Marketing Angle:
-${brief.marketingAngle}
+Concept:
+${brief.visualConcept}
 
-Headline:
-${brief.headline}
+Environment:
+${brief.environment}
 
-Call To Action:
-${brief.callToAction}
+Lighting:
+${brief.lighting}
 
-====================================================
-VIDEO
-====================================================
+Mood:
+${brief.mood}
 
-Platform:
-${brief.platform}
-
-Placement:
-${brief.placement}
-
-Create an authentic emotional story.
+Show authentic human emotion.
 
 Show the product naturally.
 
-End with a memorable emotional moment.
+Do not add text overlays.
 
-Commercial quality.
+Do not add logos.
 
-Optimized for paid social advertising.
+Do not add captions.
+
+End with an emotionally memorable moment.
 
 `;
 

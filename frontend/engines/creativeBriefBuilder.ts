@@ -1,29 +1,35 @@
 import { ProcessedProduct } from "./processProducts";
+import { directCreative } from "./creativeDirector";
+
 import { CreativeBrief } from "../types/CreativeBrief";
 
 export function buildCreativeBrief(
-  product: ProcessedProduct
+  product: ProcessedProduct,
+  platform: string = "Facebook",
+  placement: string = "Feed"
 ): CreativeBrief {
-
-  //------------------------------------------
-  // Default Campaign Values
-  //------------------------------------------
-
-  const DEFAULT_PLATFORM = "Facebook";
-  const DEFAULT_PLACEMENT = "Feed";
-  const DEFAULT_OBJECTIVE = "Drive Conversions";
 
   //------------------------------------------
   // Primary Strategy
   //------------------------------------------
 
-  const primaryStrategy =
+  const strategy =
     product.strategies.length > 0
       ? product.strategies[0]
       : null;
 
   //------------------------------------------
-  // Creative Brief
+  // Creative Director
+  //------------------------------------------
+
+  const direction =
+    directCreative(
+      product,
+      strategy ?? product.strategies[0]
+    );
+
+  //------------------------------------------
+  // Return
   //------------------------------------------
 
   return {
@@ -32,69 +38,130 @@ export function buildCreativeBrief(
     // Product
     //------------------------------------------
 
-    productTitle: product.title,
+    productTitle:
+      product.title,
 
-    description: product.description,
+    description:
+      product.description,
 
-    productImage: null,
+    productImage:
+      null,
 
     //------------------------------------------
     // Emma Intelligence
     //------------------------------------------
 
-    relationship: product.relationship,
+    relationship:
+      product.relationship,
 
-    occasion: product.occasion,
+    occasion:
+      product.occasion,
 
-    emotion: product.emotion,
+    emotion:
+      product.emotion,
 
-    giftType: product.giftType,
+    giftType:
+      product.giftType,
 
-    audience: product.audience,
+    audience:
+      product.audience,
 
-    painPoint: product.painPoint,
+    painPoint:
+      product.painPoint,
 
-    desire: product.desire,
+    desire:
+      product.desire,
 
-    fear: product.fear,
+    fear:
+      product.fear,
 
-    motivation: product.motivation,
+    motivation:
+      product.motivation,
 
-    story: product.story,
+    story:
+      product.story,
 
     //------------------------------------------
     // Marketing
     //------------------------------------------
 
-    marketingAngle: product.marketingAngle,
+    marketingAngle:
+      product.marketingAngle,
 
-    headline: product.headline,
+    headline:
+      strategy?.facebookHeadline ??
+      product.headline,
 
-    callToAction: product.callToAction,
+    callToAction:
+      strategy?.callToAction ??
+      product.callToAction,
+
+    //------------------------------------------
+    // Strategy
+    //------------------------------------------
+
+    strategy:
+      strategy?.type ??
+      "Emotional",
+
+    buyerPersona:
+      strategy?.buyerPersona ??
+      product.audience,
+
+    campaignTheme:
+      strategy?.campaignTheme ??
+      product.marketingAngle,
+
+    emotionalTrigger:
+      strategy?.emotionalTrigger ??
+      product.emotion,
+
+    hook:
+      strategy?.hook ??
+      (
+        strategy?.facebookHeadline ??
+        product.headline
+      ),
 
     //------------------------------------------
     // Campaign
     //------------------------------------------
 
-    strategy:
-      primaryStrategy?.title ??
-      "Primary Strategy",
+    platform,
 
-    platform: DEFAULT_PLATFORM,
-
-    placement: DEFAULT_PLACEMENT,
+    placement,
 
     objective:
-      product.campaign?.objective ??
-      DEFAULT_OBJECTIVE,
+      strategy?.objective ??
+      "Drive Conversions",
+
+    //------------------------------------------
+    // Creative Direction
+    //------------------------------------------
+
+    visualConcept:
+      direction.concept,
+
+    environment:
+      `${direction.scene}. ${direction.location}. ${direction.timeOfDay}.`,
+
+    lighting:
+      direction.lighting,
+
+    mood:
+      direction.mood,
 
     //------------------------------------------
     // Prompt Generation
     //------------------------------------------
 
-    imagePrompt: "",
+    imagePrompt:
+      strategy?.imagePrompt ??
+      product.campaign.imagePrompt,
 
-    videoPrompt: "",
+    videoPrompt:
+      strategy?.videoPrompt ??
+      product.campaign.videoPrompt,
 
   };
 

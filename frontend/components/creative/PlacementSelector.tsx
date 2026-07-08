@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  CreativePlatform,
-  CreativePlacement,
-} from "../../types/CreativeBrief";
-
 export interface PlacementSelection {
-  platform: CreativePlatform;
-  placement: CreativePlacement;
+  platform: string;
+  placement: string;
 }
 
 interface PlacementSelectorProps {

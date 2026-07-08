@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { CreativeBrief } from "../../../types/CreativeBrief";
-import { openAIImageService } from "../../../services/AI/OpenAI/OpenAIImagesService";
+import { openAIImageService } from "../../../services/AI/OpenAI/OpenAIImageService";
 
 function createRequestId(): string {
   return `IMG-${Date.now()}-${Math.random()
@@ -71,7 +71,6 @@ export async function POST(request: NextRequest) {
     //------------------------------------------
 
     console.log("");
-
     console.log("=====================================");
     console.log("EmmaOS Image Generation");
     console.log("=====================================");
@@ -117,11 +116,9 @@ export async function POST(request: NextRequest) {
   } catch (error) {
 
     console.error("");
-
     console.error("=====================================");
     console.error("EmmaOS Generation Error");
     console.error("=====================================");
-
     console.error(error);
 
     return NextResponse.json(

@@ -29,6 +29,18 @@ export interface CampaignStrategy {
   targetAudience: string;
 
   //------------------------------------
+  // Marketing Intelligence
+  //------------------------------------
+
+  buyerPersona: string;
+
+  campaignTheme: string;
+
+  emotionalTrigger: string;
+
+  hook: string;
+
+  //------------------------------------
   // Facebook
   //------------------------------------
 
@@ -47,7 +59,19 @@ export interface CampaignStrategy {
   emailBody: string;
 
   //------------------------------------
-  // Creative
+  // Creative Direction
+  //------------------------------------
+
+  visualConcept: string;
+
+  environment: string;
+
+  lighting: string;
+
+  mood: string;
+
+  //------------------------------------
+  // AI Prompts
   //------------------------------------
 
   imagePrompt: string;
