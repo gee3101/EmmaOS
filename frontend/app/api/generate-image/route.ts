@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { CreativeBrief } from "../../../types/CreativeBrief";
-import { openAIImageService } from "../../../services/OpenAIImagesService";
+import { openAIImageService } from "../../../services/AI/OpenAI/OpenAIImagesService";
 
 function createRequestId(): string {
   return `IMG-${Date.now()}-${Math.random()

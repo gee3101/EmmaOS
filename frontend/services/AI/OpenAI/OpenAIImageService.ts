@@ -1,9 +1,9 @@
 import OpenAI from "openai";
 
-import { CreativeBrief } from "../types/CreativeBrief";
-import { CreativeAsset } from "../types/CreativeAsset";
+import { CreativeBrief } from "../../../types/CreativeBrief";
+import { CreativeAsset } from "../../../types/CreativeAsset";
 
-import { composeImagePrompt } from "../engines/promptComposer";
+import { composeImagePrompt } from "../../../engines/promptComposer";
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
