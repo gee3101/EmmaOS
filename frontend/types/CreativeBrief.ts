@@ -81,6 +81,34 @@ export interface CreativeBrief {
   mood: string;
 
   //------------------------------------------
+  // Product Direction
+  //------------------------------------------
+
+  heroPriority: string;
+
+  prominence: string;
+
+  visibility: string;
+
+  framing: string;
+
+  focus: string;
+
+  placementDirection: string;
+
+  orientation: string;
+
+  handPlacement: string;
+
+  subjectInteraction: string;
+
+  backgroundBlur: string;
+
+  productLighting: string;
+
+  preserveDetails: string[];
+
+  //------------------------------------------
   // Prompt Generation
   //------------------------------------------
 

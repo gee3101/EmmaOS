@@ -10,6 +10,7 @@
     "test:image": "tsx scripts/test-image-edit.ts"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "next": "16.2.10",
     "openai": "^6.45.0",
     "papaparse": "^5.5.4",

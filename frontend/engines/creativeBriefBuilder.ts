@@ -1,5 +1,7 @@
 import { ProcessedProduct } from "./processProducts";
+
 import { directCreative } from "./creativeDirector";
+import { directProduct } from "./productDirector";
 
 import { CreativeBrief } from "../types/CreativeBrief";
 
@@ -22,11 +24,18 @@ export function buildCreativeBrief(
   // Creative Director
   //------------------------------------------
 
-  const direction =
+  const creativeDirection =
     directCreative(
       product,
       strategy ?? product.strategies[0]
     );
+
+  //------------------------------------------
+  // Product Director
+  //------------------------------------------
+
+  const productDirection =
+    directProduct(product);
 
   //------------------------------------------
   // Return
@@ -140,16 +149,56 @@ export function buildCreativeBrief(
     //------------------------------------------
 
     visualConcept:
-      direction.concept,
+      creativeDirection.concept,
 
     environment:
-      `${direction.scene}. ${direction.location}. ${direction.timeOfDay}.`,
+      `${creativeDirection.scene}. ${creativeDirection.location}. ${creativeDirection.timeOfDay}.`,
 
     lighting:
-      direction.lighting,
+      creativeDirection.lighting,
 
     mood:
-      direction.mood,
+      creativeDirection.mood,
+
+    //------------------------------------------
+    // Product Direction
+    //------------------------------------------
+
+    heroPriority:
+      productDirection.heroPriority,
+
+    prominence:
+      productDirection.prominence,
+
+    visibility:
+      productDirection.visibility,
+
+    framing:
+      productDirection.framing,
+
+    focus:
+      productDirection.focus,
+
+    placementDirection:
+      productDirection.placement,
+
+    orientation:
+      productDirection.orientation,
+
+    handPlacement:
+      productDirection.handPlacement,
+
+    subjectInteraction:
+      productDirection.subjectInteraction,
+
+    backgroundBlur:
+      productDirection.backgroundBlur,
+
+    productLighting:
+      productDirection.productLighting,
+
+    preserveDetails:
+      productDirection.preserveDetails,
 
     //------------------------------------------
     // Prompt Generation

@@ -4,24 +4,41 @@ export function composeImagePrompt(
   brief: CreativeBrief
 ): string {
 
+  const preserveDetails =
+    brief.preserveDetails
+      .map(rule => `• ${rule}`)
+      .join("\n");
+
   return `
 
 ====================================================
 ROLE
 ====================================================
 
-You are an award-winning commercial advertising photographer.
+You are one of the world's best luxury commercial
+advertising photographers.
 
-Your job is to create a production-ready commercial photograph.
+Your job is to create production-ready commercial
+photography.
 
 You are NOT a graphic designer.
 
-You are NOT designing a Facebook advertisement.
+You are NOT creating a Facebook advertisement.
 
 You are NOT creating marketing graphics.
 
-You are producing premium photography that will later
-be used by a designer.
+Generate photography only.
+
+====================================================
+MISSION
+====================================================
+
+Create an emotionally compelling luxury lifestyle
+photograph.
+
+The product is ALWAYS the hero.
+
+Everything in the image should support the product.
 
 ====================================================
 CRITICAL RULES
@@ -51,7 +68,7 @@ DO NOT render watermarks.
 
 The final image must contain ZERO readable text.
 
-Reserve approximately 25% clean negative space in the
+Leave approximately 25% clean negative space in the
 upper-left corner for future advertising copy.
 
 The image should look like it came directly from a
@@ -90,6 +107,201 @@ Audience
 
 ${brief.audience}
 
+Pain Point
+
+${brief.painPoint}
+
+Desire
+
+${brief.desire}
+
+Fear
+
+${brief.fear}
+
+Motivation
+
+${brief.motivation}
+
+====================================================
+EMOTIONAL STORY
+====================================================
+
+${brief.story}
+
+====================================================
+CREATIVE DIRECTION
+====================================================
+
+Visual Concept
+
+${brief.visualConcept}
+
+Environment
+
+${brief.environment}
+
+Lighting
+
+${brief.lighting}
+
+Mood
+
+${brief.mood}
+
+====================================================
+PRODUCT DIRECTION
+====================================================
+
+Hero Priority
+
+${brief.heroPriority}
+
+Prominence
+
+${brief.prominence}
+
+Visibility
+
+${brief.visibility}
+
+Framing
+
+${brief.framing}
+
+Focus
+
+${brief.focus}
+
+Placement
+
+${brief.placementDirection}
+
+Orientation
+
+${brief.orientation}
+
+Hand Placement
+
+${brief.handPlacement}
+
+Subject Interaction
+
+${brief.subjectInteraction}
+
+Background Blur
+
+${brief.backgroundBlur}
+
+Product Lighting
+
+${brief.productLighting}
+
+====================================================
+PRODUCT PROTECTION RULES
+====================================================
+
+${preserveDetails}
+
+The product must remain visually dominant.
+
+The viewer's eye should naturally be drawn to the
+product first.
+
+The product should remain one of the sharpest objects
+in the image.
+
+Human emotion should enhance the product instead of
+competing with it.
+
+====================================================
+PHOTOGRAPHY STYLE
+====================================================
+
+Luxury commercial photography.
+
+Magazine-quality composition.
+
+Professional product photography.
+
+Photorealistic.
+
+Natural human emotion.
+
+Warm cinematic lighting.
+
+Professional color grading.
+
+Balanced composition.
+
+Shallow depth of field.
+
+Elegant luxury aesthetic.
+
+Single visual focal point.
+
+Premium advertising photography.
+
+====================================================
+FINAL QUALITY STANDARD
+====================================================
+
+The final image should resemble a luxury commercial
+photograph created by an award-winning advertising
+agency.
+
+It should feel authentic, emotionally compelling,
+premium, and immediately suitable for use in a
+high-performing paid social media campaign.
+
+`;
+
+}
+
+export function composeVideoPrompt(
+  brief: CreativeBrief
+): string {
+
+  return `
+
+Create a premium commercial lifestyle video.
+
+Generate cinematic footage only.
+
+Do not render text overlays.
+
+Do not render captions.
+
+Do not render logos.
+
+Do not render watermarks.
+
+====================================================
+PRODUCT
+====================================================
+
+${brief.productTitle}
+
+${brief.description}
+
+====================================================
+CUSTOMER
+====================================================
+
+Audience
+
+${brief.audience}
+
+Emotion
+
+${brief.emotion}
+
+====================================================
+STORY
+====================================================
+
+${brief.story}
+
 ====================================================
 CREATIVE DIRECTION
 ====================================================
@@ -111,126 +323,49 @@ Mood
 ${brief.mood}
 
 ====================================================
-EMOTIONAL STORY
+PRODUCT DIRECTION
 ====================================================
 
-${brief.story}
+Hero Priority
+
+${brief.heroPriority}
+
+Prominence
+
+${brief.prominence}
+
+Visibility
+
+${brief.visibility}
+
+Focus
+
+${brief.focus}
+
+Placement
+
+${brief.placementDirection}
+
+Subject Interaction
+
+${brief.subjectInteraction}
 
 ====================================================
-PRODUCT RULES
+STYLE
 ====================================================
 
-The product is the hero.
+Luxury commercial filmmaking.
 
-The uploaded product is the source of truth.
+Professional cinematography.
 
-Do not redesign the product.
+Authentic human emotion.
 
-Do not change materials.
-
-Do not change colors.
-
-Do not change proportions.
-
-Do not change craftsmanship.
-
-Do not simplify details.
-
-Keep the product clearly visible.
-
-Create an authentic emotional moment around the product.
-
-====================================================
-PHOTOGRAPHY STYLE
-====================================================
-
-Luxury commercial photography.
-
-Photorealistic.
-
-Professional composition.
-
-Natural human emotion.
+Natural movement.
 
 Warm cinematic lighting.
 
-Shallow depth of field.
-
-High-end advertising photography.
-
-Magazine-quality image.
-
-Elegant color grading.
-
-Clean background.
-
-Single visual focal point.
-
-Leave generous negative space.
-
-The final result should resemble a premium commercial
-photograph from a luxury advertising agency.
+The product remains the visual hero throughout the
+entire video.
 
 `;
-
-}
-
-export function composeVideoPrompt(
-  brief: CreativeBrief
-): string {
-
-  return `
-
-Create a premium commercial lifestyle video.
-
-The final result should feel like a luxury brand commercial.
-
-Product
-
-${brief.productTitle}
-
-Description
-
-${brief.description}
-
-Audience
-
-${brief.audience}
-
-Emotion
-
-${brief.emotion}
-
-Story
-
-${brief.story}
-
-Creative Direction
-
-Concept:
-${brief.visualConcept}
-
-Environment:
-${brief.environment}
-
-Lighting:
-${brief.lighting}
-
-Mood:
-${brief.mood}
-
-Show authentic human emotion.
-
-Show the product naturally.
-
-Do not add text overlays.
-
-Do not add logos.
-
-Do not add captions.
-
-End with an emotionally memorable moment.
-
-`;
-
 }
