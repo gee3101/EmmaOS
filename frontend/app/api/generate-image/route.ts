@@ -24,8 +24,6 @@ export async function POST(request: NextRequest) {
 
     if (!process.env.OPENAI_API_KEY) {
 
-      console.error(`[${requestId}] Missing OPENAI_API_KEY`);
-
       return NextResponse.json(
         {
           success: false,
@@ -38,15 +36,16 @@ export async function POST(request: NextRequest) {
     }
 
     //------------------------------------------
-    // Parse Request
+    // Parse FormData
     //------------------------------------------
 
-    const body = await request.json();
+    const formData =
+      await request.formData();
 
-    const brief =
-      body?.brief as CreativeBrief | undefined;
+    const briefJson =
+      formData.get("brief");
 
-    if (!brief) {
+    if (typeof briefJson !== "string") {
 
       return NextResponse.json(
         {
@@ -54,10 +53,22 @@ export async function POST(request: NextRequest) {
           requestId,
           error: "CreativeBrief is required.",
         },
-        { status: 400 }
+        {
+          status: 400,
+        }
       );
 
     }
+
+    const brief =
+      JSON.parse(briefJson) as CreativeBrief;
+
+    //------------------------------------------
+    // Uploaded Product Image
+    //------------------------------------------
+
+    const productImage =
+      formData.get("productImage") as File | null;
 
     //------------------------------------------
     // Logging
@@ -70,10 +81,11 @@ export async function POST(request: NextRequest) {
     console.log("=====================================");
 
     console.log(`Request: ${requestId}`);
+    console.log(`Product: ${brief.productTitle}`);
     console.log(`Platform: ${brief.platform}`);
     console.log(`Placement: ${brief.placement}`);
     console.log(`Strategy: ${brief.strategy}`);
-    console.log(`Audience: ${brief.targetAudience}`);
+    console.log(`Image Uploaded: ${productImage ? "Yes" : "No"}`);
 
     //------------------------------------------
     // Generate Image
@@ -81,22 +93,26 @@ export async function POST(request: NextRequest) {
 
     const asset =
       await openAIImageService.generateImage(
-        brief
+        brief,
+        productImage
       );
 
     //------------------------------------------
     // Complete
     //------------------------------------------
 
-    const elapsed =
-      Date.now() - startTime;
-
-    console.log(`Completed in ${elapsed}ms`);
+    console.log(
+      `Completed in ${Date.now() - startTime}ms`
+    );
 
     return NextResponse.json({
+
       success: true,
+
       requestId,
+
       asset,
+
     });
 
   } catch (error) {
@@ -112,7 +128,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
+
         requestId,
+
         error:
           error instanceof Error
             ? error.message

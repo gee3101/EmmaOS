@@ -15,18 +15,39 @@ export class OpenAIProvider implements AIProvider {
     brief: CreativeBrief
   ): Promise<CreativeAsset> {
 
+    //------------------------------------------
+    // Build FormData
+    //------------------------------------------
+
+    const formData = new FormData();
+
+    formData.append(
+      "brief",
+      JSON.stringify({
+        ...brief,
+        productImage: undefined,
+      })
+    );
+
+    if (brief.productImage) {
+
+      formData.append(
+        "productImage",
+        brief.productImage
+      );
+
+    }
+
+    //------------------------------------------
+    // Call API
+    //------------------------------------------
+
     const response =
       await fetch("/api/generate-image", {
 
         method: "POST",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-          brief,
-        }),
+        body: formData,
 
       });
 
@@ -53,11 +74,6 @@ export class OpenAIProvider implements AIProvider {
   async generateVideo(
     brief: CreativeBrief
   ): Promise<CreativeAsset> {
-
-    /**
-     * Video generation will be implemented
-     * once the video endpoint is complete.
-     */
 
     throw new Error(
       "Video generation is not yet implemented."
