@@ -1,10 +1,12 @@
 import { CreativeBrief } from "../types/CreativeBrief";
+
 import {
   CompositeSceneSpecification,
   ProductPlacement,
+  PlacementIntent,
+  ProductAlignment,
   CameraAngle,
   LightingStyle,
-  ShadowDirection,
 } from "../types/CompositeSceneSpecification";
 
 export function buildCompositeSceneSpecification(
@@ -12,270 +14,110 @@ export function buildCompositeSceneSpecification(
 ): CompositeSceneSpecification {
 
   //------------------------------------------
-  // Defaults
+  // Determine Scene
   //------------------------------------------
 
-  const productPlacement: ProductPlacement =
-    "lower-right";
+  const placement =
+    determinePlacement(brief);
 
-  const cameraAngle: CameraAngle =
-    "eye-level";
+  const cameraAngle =
+    determineCamera(brief);
 
-  const lighting: LightingStyle =
-    "warm-indoor";
-
-  const shadowDirection: ShadowDirection =
-    "left";
+  const lighting =
+    determineLighting(brief);
 
   //------------------------------------------
-  // Emotional Tone
-  //------------------------------------------
-
-  const emotionalTone =
-    brief.strategy || "Emotional";
-
-  //------------------------------------------
-  // Environment
-  //------------------------------------------
-
-  let environment =
-    "A beautifully decorated modern home.";
-
-  let foregroundElements: string[] = [];
-
-  let backgroundElements: string[] = [];
-
-  let subjects: string[] = [];
-
-  let subjectActions: string[] = [];
-
-  //------------------------------------------
-  // Strategy-Based Scene Planning
-  //------------------------------------------
-
-  switch (
-    emotionalTone.toLowerCase()
-  ) {
-
-    case "emotional":
-
-      environment =
-        "A warm, elegant living room during golden hour.";
-
-      foregroundElements = [
-        "Comfortable furniture",
-        "Soft blankets",
-        "Coffee table",
-      ];
-
-      backgroundElements = [
-        "Large windows",
-        "Warm sunlight",
-        "Family décor",
-      ];
-
-      subjects = [
-        "Mother",
-        "Adult daughter",
-      ];
-
-      subjectActions = [
-        "Smiling warmly",
-        "Presenting a meaningful gift",
-        "Making eye contact",
-      ];
-
-      break;
-
-    case "luxury":
-
-      environment =
-        "A sophisticated luxury interior with premium finishes.";
-
-      foregroundElements = [
-        "Marble table",
-        "Designer décor",
-      ];
-
-      backgroundElements = [
-        "Modern architecture",
-        "Luxury furnishings",
-      ];
-
-      subjects = [
-        "Elegant woman",
-      ];
-
-      subjectActions = [
-        "Admiring a premium gift",
-      ];
-
-      break;
-
-    case "romantic":
-
-      environment =
-        "A cozy candlelit room with intimate ambiance.";
-
-      foregroundElements = [
-        "Candles",
-        "Flowers",
-      ];
-
-      backgroundElements = [
-        "Warm bokeh lighting",
-      ];
-
-      subjects = [
-        "Couple",
-      ];
-
-      subjectActions = [
-        "Exchanging gifts",
-        "Smiling",
-      ];
-
-      break;
-
-    default:
-
-      environment =
-        "A clean, inviting lifestyle environment.";
-
-      foregroundElements = [
-        "Tasteful home décor",
-      ];
-
-      backgroundElements = [
-        "Soft natural lighting",
-      ];
-
-      subjects = [
-        "Happy customer",
-      ];
-
-      subjectActions = [
-        "Holding a gift",
-      ];
-
-      break;
-
-  }
-
-  //------------------------------------------
-  // Background Prompt
-  //------------------------------------------
-
-  const backgroundPrompt = `
-Create a photorealistic lifestyle scene.
-
-Environment:
-${environment}
-
-Subjects:
-${subjects.join(", ")}
-
-Actions:
-${subjectActions.join(", ")}
-
-Foreground:
-${foregroundElements.join(", ")}
-
-Background:
-${backgroundElements.join(", ")}
-
-Lighting:
-${lighting}
-
-Camera:
-${cameraAngle}
-
-IMPORTANT:
-
-Do NOT generate any product.
-
-Do NOT generate jewelry.
-
-Do NOT generate gift boxes.
-
-Do NOT generate message cards.
-
-Leave natural empty space where the product will later be composited.
-
-The final image should appear as though someone is naturally presenting a gift while leaving the product area empty.
-
-No text.
-
-No logos.
-
-No branding.
-
-Professional commercial lifestyle photography.
-`.trim();
-
-  //------------------------------------------
-  // Negative Prompt
-  //------------------------------------------
-
-  const negativePrompt = `
-Jewelry,
-Necklace,
-Gift box,
-Message card,
-Packaging,
-Text,
-Typography,
-Logo,
-Watermark,
-Advertisement,
-Call to action,
-UI elements,
-Graphic design,
-Product rendering
-`.trim();
-
-  //------------------------------------------
-  // Return
+  // Build Specification
   //------------------------------------------
 
   return {
 
     //------------------------------------------
-    // Scene Identity
+    // Identity
     //------------------------------------------
 
     title:
-      brief.productTitle ??
-      "Lifestyle Scene",
+      brief.productTitle,
 
     strategy:
-      emotionalTone,
+      brief.strategy,
 
     //------------------------------------------
-    // Scene Prompt
+    // Prompt
     //------------------------------------------
 
-    backgroundPrompt,
+    // Prompt is generated later by
+    // backgroundPromptBuilder.ts
 
-    negativePrompt,
+    backgroundPrompt:
+      "",
+
+    negativePrompt:
+      "",
 
     //------------------------------------------
-    // Composition
+    // Product Placement
     //------------------------------------------
 
-    productPlacement,
+    productPlacement:
+      placement.productPlacement,
+
+    placementIntent:
+      placement.intent,
+
+    productAlignment:
+      placement.alignment,
 
     reservedProductArea: {
 
-      x: 60,
+      x: 58,
 
-      y: 55,
+      y: 18,
 
-      width: 30,
+      width: 32,
 
-      height: 35,
+      height: 60,
 
     },
+
+    safeMargins: {
+
+      top: 5,
+
+      right: 5,
+
+      bottom: 5,
+
+      left: 5,
+
+    },
+
+    //------------------------------------------
+    // Orientation
+    //------------------------------------------
+
+    productRotation:
+      0,
+
+    //------------------------------------------
+    // Scaling
+    //------------------------------------------
+
+    productScale: {
+
+      minCoverage: 18,
+
+      idealCoverage: 25,
+
+      maxCoverage: 35,
+
+      preserveAspectRatio: true,
+
+    },
+
+    //------------------------------------------
+    // Camera
+    //------------------------------------------
 
     cameraAngle,
 
@@ -283,11 +125,12 @@ Product rendering
     // Environment
     //------------------------------------------
 
-    environment,
+    environment:
+      brief.environment,
 
-    foregroundElements,
+    foregroundElements: [],
 
-    backgroundElements,
+    backgroundElements: [],
 
     //------------------------------------------
     // Lighting
@@ -295,37 +138,53 @@ Product rendering
 
     lighting,
 
-    shadowDirection,
+    shadowDirection:
+      "left",
 
     //------------------------------------------
-    // Subject Direction
+    // Subjects
     //------------------------------------------
 
-    subjects,
+    subjects: [
 
-    subjectActions,
+      brief.audience,
 
-    emotionalTone,
+    ],
+
+    subjectActions: [
+
+      brief.subjectInteraction,
+
+    ],
+
+    emotionalTone:
+      brief.emotion,
 
     //------------------------------------------
     // Rendering
     //------------------------------------------
 
-    aspectRatio: "1:1",
+    aspectRatio:
+      brief.layout.aspectRatio,
 
-    outputWidth: 1024,
+    outputWidth:
+      brief.layout.width,
 
-    outputHeight: 1024,
+    outputHeight:
+      brief.layout.height,
 
     //------------------------------------------
     // Product Preservation
     //------------------------------------------
 
-    preserveOriginalProduct: true,
+    preserveOriginalProduct:
+      brief.preservation.preserveOriginalProduct,
 
-    removeProductBackground: true,
+    removeProductBackground:
+      brief.preservation.removeBackground,
 
-    generateBackgroundOnly: true,
+    generateBackgroundOnly:
+      true,
 
     //------------------------------------------
     // Metadata
@@ -333,14 +192,151 @@ Product rendering
 
     notes: [
 
-      "Reserved area is intended for product compositing.",
+      brief.marketingAngle,
 
-      "Background intentionally excludes the product.",
+      brief.visualConcept,
 
-      "Original uploaded product should be preserved without modification.",
+      brief.hook,
+
+      brief.story,
 
     ],
 
   };
+
+}
+
+function determinePlacement(
+  brief: CreativeBrief
+): {
+
+  productPlacement: ProductPlacement;
+
+  intent: PlacementIntent;
+
+  alignment: ProductAlignment;
+
+} {
+
+  switch (
+    brief.placementDirection.toLowerCase()
+  ) {
+
+    case "left":
+
+      return {
+
+        productPlacement:
+          "lower-left",
+
+        intent:
+          "hero-product",
+
+        alignment:
+          "left",
+
+      };
+
+    case "right":
+
+      return {
+
+        productPlacement:
+          "lower-right",
+
+        intent:
+          "hero-product",
+
+        alignment:
+          "right",
+
+      };
+
+    default:
+
+      return {
+
+        productPlacement:
+          "center",
+
+        intent:
+          "gift-presented",
+
+        alignment:
+          "center",
+
+      };
+
+  }
+
+}
+
+function determineCamera(
+  brief: CreativeBrief
+): CameraAngle {
+
+  const framing =
+    brief.framing.toLowerCase();
+
+  if (
+    framing.includes("flat")
+  ) {
+
+    return "overhead";
+
+  }
+
+  if (
+    framing.includes("dramatic")
+  ) {
+
+    return "low-angle";
+
+  }
+
+  if (
+    framing.includes("wide")
+  ) {
+
+    return "high-angle";
+
+  }
+
+  return "eye-level";
+
+}
+
+function determineLighting(
+  brief: CreativeBrief
+): LightingStyle {
+
+  const lighting =
+    brief.lighting.toLowerCase();
+
+  if (
+    lighting.includes("golden")
+  ) {
+
+    return "golden-hour";
+
+  }
+
+  if (
+    lighting.includes("studio")
+  ) {
+
+    return "studio";
+
+  }
+
+  if (
+    lighting.includes("day")
+  ) {
+
+    return "soft-daylight";
+
+  }
+
+  return "warm-indoor";
 
 }

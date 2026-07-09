@@ -1,18 +1,30 @@
 import {
+  CompositeSceneSpecification,
+} from "../../types/CompositeSceneSpecification";
+
+import {
+  openAIBackgroundService,
+} from "../AI/OpenAI/OpenAIBackgroundService";
+
+import {
   removeBgImageProcessingProvider,
 } from "../ImageProcessing/providers/RemoveBgImageProcessingProvider";
+
+import {
+  transparentImageTrimmer,
+} from "../ImageProcessing/TransparentImageTrimmer";
 
 import {
   canvasImageComposer,
 } from "../ImageProcessing/CanvasImageComposer";
 
 import {
-  CompositeSceneSpecification,
-} from "../../types/CompositeSceneSpecification";
+  getImageMetadata,
+} from "../ImageProcessing/ImageMetadata";
 
 import {
-  buildBackgroundPrompt,
-} from "../../engines/backgroundPromptBuilder";
+  placementEngine,
+} from "../Placement/PlacementEngine";
 
 export interface CompositeCreativeRequest {
 
@@ -21,12 +33,6 @@ export interface CompositeCreativeRequest {
   //------------------------------------------
 
   productImage: File;
-
-  //------------------------------------------
-  // Background
-  //------------------------------------------
-
-  backgroundImage: Buffer;
 
   //------------------------------------------
   // Scene
@@ -46,98 +52,121 @@ export class CompositeCreativePipeline {
     request: CompositeCreativeRequest
   ): Promise<Buffer> {
 
+    console.log("");
+    console.log("=====================================");
+    console.log("Emma Composite Creative Pipeline");
+    console.log("=====================================");
+
     //------------------------------------------
+    // Step 1
+    // Generate AI Background
+    //------------------------------------------
+
+    console.log("");
+    console.log("Step 1 / 5");
+    console.log("Generating lifestyle background...");
+
+    const background =
+      await openAIBackgroundService.generateBackground(
+        request.scene
+      );
+
+    //------------------------------------------
+    // Step 2
     // Remove Background
     //------------------------------------------
 
     console.log("");
+    console.log("Step 2 / 5");
+    console.log("Removing product background...");
 
-    console.log(
-      "====================================="
-    );
+    const removedBackground =
+      await removeBgImageProcessingProvider.removeBackground(
+        request.productImage
+      );
 
-    console.log(
-      "Emma Composite Pipeline"
-    );
-
-    console.log(
-      "====================================="
-    );
+    //------------------------------------------
+    // Step 3
+    // Trim Transparent Padding
+    //------------------------------------------
 
     console.log("");
-
-    console.log(
-      "Removing product background..."
-    );
+    console.log("Step 3 / 5");
+    console.log("Trimming transparent borders...");
 
     const transparentProduct =
-
-      await removeBgImageProcessingProvider
-        .removeBackground(
-          request.productImage
-        );
+      await transparentImageTrimmer.trim(
+        removedBackground
+      );
 
     //------------------------------------------
-    // Background Prompt
+    // Step 4
+    // Calculate Placement
     //------------------------------------------
 
-    const prompt =
+    console.log("");
+    console.log("Step 4 / 5");
+    console.log("Calculating product placement...");
 
-      buildBackgroundPrompt(
-        request.scene
+    const metadata =
+      await getImageMetadata(
+        transparentProduct
       );
 
     console.log("");
+    console.log("Trimmed Product Metadata");
+    console.log(metadata);
 
-    console.log(
-      "Background Prompt"
-    );
+    const placement =
+      placementEngine.calculate({
 
-    console.log("-------------------------------------");
+        scene:
+          request.scene,
 
-    console.log(prompt);
+        backgroundWidth:
+          request.scene.outputWidth,
 
-    //------------------------------------------
-    // Composite
-    //------------------------------------------
+        backgroundHeight:
+          request.scene.outputHeight,
 
-    console.log("");
+        productWidth:
+          metadata.width,
 
-    console.log(
-      "Compositing product..."
-    );
-
-    const composite =
-
-      await canvasImageComposer.compose({
-
-        background:
-          request.backgroundImage,
-
-        foreground:
-          transparentProduct,
-
-        placement: {
-
-          left: 275,
-
-          top: 220,
-
-          width: 475,
-
-          height: 475,
-
-        },
-
-        format: "png",
+        productHeight:
+          metadata.height,
 
       });
 
     console.log("");
+    console.log("Calculated Placement");
+    console.log(placement);
 
-    console.log(
-      "Composite complete."
-    );
+    //------------------------------------------
+    // Step 5
+    // Composite
+    //------------------------------------------
+
+    console.log("");
+    console.log("Step 5 / 5");
+    console.log("Compositing final creative...");
+
+    const composite =
+      await canvasImageComposer.compose({
+
+        background,
+
+        foreground:
+          transparentProduct,
+
+        placement,
+
+        format:
+          "png",
+
+      });
+
+    console.log("");
+    console.log("Composite complete.");
 
     return composite;
 

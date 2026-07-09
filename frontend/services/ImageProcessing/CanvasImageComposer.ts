@@ -1,22 +1,8 @@
 import sharp from "sharp";
 
-export interface ProductPlacement {
-
-  //------------------------------------------
-  // Position
-  //------------------------------------------
-
-  left: number;
-  top: number;
-
-  //------------------------------------------
-  // Size
-  //------------------------------------------
-
-  width: number;
-  height: number;
-
-}
+import {
+  Placement,
+} from "../Placement/Placement";
 
 export interface CompositeImageRequest {
 
@@ -25,13 +11,14 @@ export interface CompositeImageRequest {
   //------------------------------------------
 
   background: Buffer;
+
   foreground: Buffer;
 
   //------------------------------------------
   // Placement
   //------------------------------------------
 
-  placement: ProductPlacement;
+  placement: Placement;
 
   //------------------------------------------
   // Export
@@ -61,10 +48,14 @@ export class CanvasImageComposer {
         .resize({
 
           width:
-            request.placement.width,
+            Math.round(
+              request.placement.width
+            ),
 
           height:
-            request.placement.height,
+            Math.round(
+              request.placement.height
+            ),
 
           fit: "contain",
 
@@ -90,10 +81,14 @@ export class CanvasImageComposer {
               resizedForeground,
 
             left:
-              request.placement.left,
+              Math.round(
+                request.placement.left
+              ),
 
             top:
-              request.placement.top,
+              Math.round(
+                request.placement.top
+              ),
 
           },
 

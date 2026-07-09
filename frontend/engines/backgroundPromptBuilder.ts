@@ -11,167 +11,193 @@ export function buildBackgroundPrompt(
   const foreground =
     specification.foregroundElements.length > 0
       ? specification.foregroundElements.join(", ")
-      : "None";
+      : "Minimal tasteful décor";
 
   const background =
     specification.backgroundElements.length > 0
       ? specification.backgroundElements.join(", ")
-      : "None";
+      : "Soft out-of-focus background";
 
   const subjects =
     specification.subjects.length > 0
       ? specification.subjects.join(", ")
-      : "None";
+      : "People";
 
   const actions =
     specification.subjectActions.length > 0
       ? specification.subjectActions.join(", ")
-      : "None";
+      : "Naturally interacting";
 
   //------------------------------------------
   // Prompt
   //------------------------------------------
 
   return `
-You are an award-winning commercial lifestyle photographer.
+You are an award-winning commercial advertising photographer working for a luxury lifestyle brand.
 
-Your task is to create ONLY the BACKGROUND ENVIRONMENT for a premium e-commerce advertisement.
+Your task is to create ONLY the photographic background for a premium social media advertisement.
 
-The product will be composited later.
+The actual product will be professionally composited into the photograph after generation.
 
-DO NOT generate any product.
+Your responsibility is to create a believable environment that naturally supports that product.
 
-DO NOT generate jewelry.
+==================================================
+PRIMARY OBJECTIVE
+==================================================
 
-DO NOT generate gift boxes.
+Create a genuine emotional lifestyle photograph.
 
-DO NOT generate message cards.
+The people should appear authentic.
 
-DO NOT generate packaging.
+The scene should feel candid rather than posed.
 
-DO NOT generate branding.
+The final result should resemble a premium Facebook advertisement photographed by a professional commercial agency.
 
-DO NOT generate text.
-
-DO NOT generate logos.
-
-DO NOT generate advertisements.
-
-DO NOT place anything inside the reserved product area.
-
---------------------------------------------------
-
-SCENE
-
-${specification.environment}
-
---------------------------------------------------
-
+==================================================
 SUBJECTS
+==================================================
 
 ${subjects}
 
---------------------------------------------------
-
-SUBJECT ACTIONS
+==================================================
+ACTIONS
+==================================================
 
 ${actions}
 
---------------------------------------------------
+The subjects should naturally present an invisible object.
 
+Their hands should be positioned around empty space.
+
+That empty space should feel intentional.
+
+Nothing should occupy the presentation space.
+
+Their attention should naturally focus on each other or the empty presentation area.
+
+==================================================
+ENVIRONMENT
+==================================================
+
+${specification.environment}
+
+==================================================
 FOREGROUND
+==================================================
 
 ${foreground}
 
---------------------------------------------------
-
+==================================================
 BACKGROUND
+==================================================
 
 ${background}
 
---------------------------------------------------
-
-CAMERA
-
-Angle:
-${specification.cameraAngle}
-
-Product Placement:
-${specification.productPlacement}
-
-Reserved Product Area:
-
-X:
-${specification.reservedProductArea.x}%
-
-Y:
-${specification.reservedProductArea.y}%
-
-Width:
-${specification.reservedProductArea.width}%
-
-Height:
-${specification.reservedProductArea.height}%
-
-Leave this area naturally empty.
-
-It should appear that a product could realistically be placed there.
-
---------------------------------------------------
-
+==================================================
 LIGHTING
+==================================================
 
 Lighting Style:
+
 ${specification.lighting}
 
-Shadow Direction:
-${specification.shadowDirection}
+Create soft natural lighting.
 
-Lighting should naturally illuminate the reserved product area.
+Illuminate the presentation area evenly.
 
---------------------------------------------------
+Use realistic shadows.
 
-EMOTIONAL TONE
+Avoid harsh contrast.
 
-${specification.emotionalTone}
+==================================================
+CAMERA
+==================================================
 
---------------------------------------------------
+Camera Angle:
 
-STYLE
+${specification.cameraAngle}
 
-Ultra realistic.
+Professional full-frame DSLR.
 
-Premium commercial photography.
+50mm prime lens.
 
 Natural depth of field.
 
-Professional composition.
+Luxury commercial photography.
 
-Magazine-quality lighting.
+==================================================
+STYLE
+==================================================
 
-Authentic human expressions.
+Ultra photorealistic.
+
+Premium lifestyle photography.
+
+Natural skin tones.
+
+Magazine-quality composition.
+
+Elegant framing.
 
 Clean composition.
 
-No clutter.
+Balanced visual hierarchy.
 
-No distractions.
+The empty presentation space should naturally become the visual focal point.
 
-No text.
+==================================================
+IMPORTANT
+==================================================
 
-No watermark.
+Do NOT generate:
 
-No logos.
+• Jewelry
 
-No product.
+• Necklaces
 
-No jewelry.
+• Rings
 
-No gift box.
+• Watches
 
-No message card.
+• Gift boxes
 
-Only generate the environment that will later receive the original uploaded product.
+• Message cards
+
+• Greeting cards
+
+• Packaging
+
+• Wrapped presents
+
+• Pedestals
+
+• Display stands
+
+• Shopping bags
+
+• Flowers being held
+
+• Decorative props in the presentation space
+
+• Text
+
+• Logos
+
+• Branding
+
+• Watermarks
+
+• UI elements
+
+==================================================
+FINAL GOAL
+==================================================
+
+Produce a believable commercial lifestyle photograph that appears intentionally staged for a product that will be composited later.
+
+The empty presentation space should feel completely natural.
+
+The viewer should immediately understand that something meaningful belongs there, while no object has yet been placed.
 `.trim();
 
 }

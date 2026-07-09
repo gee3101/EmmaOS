@@ -1,45 +1,96 @@
 export type ProductPlacement =
   | "center"
-  | "left"
-  | "right"
   | "upper-left"
   | "upper-right"
   | "lower-left"
   | "lower-right";
 
+export type PlacementIntent =
+  | "hero-product"
+  | "gift-presented"
+  | "held-in-hands"
+  | "table-display"
+  | "flat-lay";
+
+export type ProductAlignment =
+  | "center"
+  | "top"
+  | "bottom"
+  | "left"
+  | "right";
+
 export type CameraAngle =
   | "eye-level"
   | "high-angle"
   | "low-angle"
-  | "over-the-shoulder"
-  | "close-up"
-  | "three-quarter";
+  | "overhead";
 
 export type LightingStyle =
-  | "golden-hour"
-  | "soft-daylight"
-  | "studio"
   | "warm-indoor"
-  | "cool-indoor"
-  | "dramatic"
-  | "candlelight";
+  | "soft-daylight"
+  | "golden-hour"
+  | "studio";
 
 export type ShadowDirection =
   | "left"
   | "right"
   | "front"
-  | "behind"
-  | "soft"
-  | "diffuse";
+  | "back";
 
-export interface ReservedProductArea {
+export interface ReservedArea {
+
+  //------------------------------------------
+  // Percentage of Output Canvas
+  //------------------------------------------
+
   x: number;
+
   y: number;
+
   width: number;
+
   height: number;
+
+}
+
+export interface ProductScale {
+
+  //------------------------------------------
+  // Canvas Coverage
+  //------------------------------------------
+
+  minCoverage: number;
+
+  idealCoverage: number;
+
+  maxCoverage: number;
+
+  //------------------------------------------
+  // Preserve Original Aspect Ratio
+  //------------------------------------------
+
+  preserveAspectRatio: boolean;
+
+}
+
+export interface SafeMargins {
+
+  //------------------------------------------
+  // Prevent Product From Touching Edges
+  //------------------------------------------
+
+  top: number;
+
+  right: number;
+
+  bottom: number;
+
+  left: number;
+
 }
 
 export interface CompositeSceneSpecification {
+
   //------------------------------------------
   // Scene Identity
   //------------------------------------------
@@ -49,7 +100,7 @@ export interface CompositeSceneSpecification {
   strategy: string;
 
   //------------------------------------------
-  // Scene Prompt
+  // Prompt
   //------------------------------------------
 
   backgroundPrompt: string;
@@ -57,12 +108,34 @@ export interface CompositeSceneSpecification {
   negativePrompt: string;
 
   //------------------------------------------
-  // Composition
+  // Product Placement
   //------------------------------------------
 
   productPlacement: ProductPlacement;
 
-  reservedProductArea: ReservedProductArea;
+  placementIntent: PlacementIntent;
+
+  productAlignment: ProductAlignment;
+
+  reservedProductArea: ReservedArea;
+
+  safeMargins: SafeMargins;
+
+  //------------------------------------------
+  // Product Orientation
+  //------------------------------------------
+
+  productRotation: number;
+
+  //------------------------------------------
+  // Product Scaling
+  //------------------------------------------
+
+  productScale: ProductScale;
+
+  //------------------------------------------
+  // Camera
+  //------------------------------------------
 
   cameraAngle: CameraAngle;
 
@@ -115,8 +188,9 @@ export interface CompositeSceneSpecification {
   generateBackgroundOnly: boolean;
 
   //------------------------------------------
-  // Future Metadata
+  // Metadata
   //------------------------------------------
 
-  notes?: string[];
+  notes: string[];
+
 }

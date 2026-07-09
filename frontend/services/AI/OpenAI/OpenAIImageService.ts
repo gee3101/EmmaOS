@@ -4,12 +4,28 @@ import { CreativeBrief } from "../../../types/CreativeBrief";
 import { CreativeAsset } from "../../../types/CreativeAsset";
 
 import { buildSceneSpecification } from "../../../engines/buildSceneSpecification";
+import { buildCompositeSceneSpecification } from "../../../engines/buildCompositeSceneSpecification";
 
 import { buildOpenAIPrompt } from "./openAIPromptBuilder";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { compositeCreativePipeline } from "../../Creative/CompositeCreativePipeline";
+import { buildCompositeCreativeAsset } from "../../Creative/buildCompositeCreativeAsset";
+
+let client: OpenAI | null = null;
+
+function createClient(): OpenAI {
+
+  if (!client) {
+
+    client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+
+  }
+
+  return client;
+
+}
 
 export class OpenAIImageService {
 
@@ -40,6 +56,45 @@ export class OpenAIImageService {
     } else {
 
       console.log("No product image received.");
+
+    }
+
+    //------------------------------------------
+    // Composite Creative Engine
+    //------------------------------------------
+
+    if (productImage) {
+
+      console.log("");
+      console.log("=====================================");
+      console.log("Emma Composite Creative");
+      console.log("=====================================");
+
+      const compositeScene =
+        buildCompositeSceneSpecification(
+          brief
+        );
+
+      const image =
+        await compositeCreativePipeline.generate({
+
+          productImage,
+
+          scene:
+            compositeScene,
+
+        });
+
+      return buildCompositeCreativeAsset({
+
+        brief,
+
+        image,
+
+        prompt:
+          compositeScene.backgroundPrompt,
+
+      });
 
     }
 
@@ -78,7 +133,7 @@ export class OpenAIImageService {
     //------------------------------------------
 
     const response =
-      await client.images.generate({
+      await createClient().images.generate({
 
         model: "gpt-image-1",
 
@@ -120,8 +175,7 @@ export class OpenAIImageService {
     //------------------------------------------
 
     return {
-
-      //----------------------------------------
+         //----------------------------------------
       // Identity
       //----------------------------------------
 
@@ -238,7 +292,6 @@ export class OpenAIImageService {
 
   }
 
-}
-
-export const openAIImageService =
-  new OpenAIImageService();
+  
+} export const openAIImageService =
+  new OpenAIImageService();  
