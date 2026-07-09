@@ -44,12 +44,6 @@ export interface ProductDirection {
 
   productLighting: string;
 
-  //------------------------------------------
-  // Protection Rules
-  //------------------------------------------
-
-  preserveDetails: string[];
-
 }
 
 export function directProduct(
@@ -60,7 +54,7 @@ export function directProduct(
   // Defaults
   //------------------------------------------
 
-  let direction: ProductDirection = {
+  const direction: ProductDirection = {
 
     heroPriority:
       "Primary subject",
@@ -87,29 +81,13 @@ export function directProduct(
       "Hands naturally guide attention toward the product",
 
     subjectInteraction:
-      "Subjects admire and interact naturally with the product",
+      "Subjects naturally interact with the product",
 
     backgroundBlur:
       "Soft shallow depth of field",
 
     productLighting:
-      "Soft natural light highlighting product details",
-
-    preserveDetails: [
-
-      "Do not redesign the product",
-
-      "Do not change shape",
-
-      "Do not change materials",
-
-      "Do not change colors",
-
-      "Do not change proportions",
-
-      "Do not remove details",
-
-    ],
+      "Soft natural light emphasizing product details",
 
   };
 
@@ -127,57 +105,35 @@ export function directProduct(
 
   ) {
 
-    direction = {
+    direction.prominence =
+      "Pendant occupies approximately 10–15% of the image";
 
-      ...direction,
+    direction.visibility =
+      "Pendant fully visible";
 
-      prominence:
-        "Pendant occupies approximately 10-15% of the image",
+    direction.framing =
+      "Pendant positioned near the visual center";
 
-      visibility:
-        "Pendant fully visible",
+    direction.focus =
+      "Pendant is the sharpest object in the image";
 
-      framing:
-        "Pendant positioned near the visual center",
+    direction.placement =
+      "Centered on the subject's chest";
 
-      focus:
-        "Pendant is the sharpest object in the image",
+    direction.orientation =
+      "Pendant hangs naturally";
 
-      placement:
-        "Centered on the subject's chest",
+    direction.handPlacement =
+      "Hands gently frame the pendant without covering it";
 
-      orientation:
-        "Pendant hangs naturally",
+    direction.subjectInteraction =
+      "Subject emotionally reacts to receiving or wearing the necklace";
 
-      handPlacement:
-        "Hands gently frame or touch the pendant",
+    direction.backgroundBlur =
+      "Creamy professional portrait bokeh";
 
-      subjectInteraction:
-        "Subject emotionally reacts to receiving or wearing the necklace",
-
-      backgroundBlur:
-        "Creamy professional portrait blur",
-
-      productLighting:
-        "Soft directional lighting emphasizing metal and gemstones",
-
-      preserveDetails: [
-
-        "Keep pendant identical",
-
-        "Keep chain identical",
-
-        "Keep gemstones identical",
-
-        "Keep engraving identical",
-
-        "Do not alter ShineOn design",
-
-        "Do not crop the pendant",
-
-      ],
-
-    };
+    direction.productLighting =
+      "Soft directional lighting emphasizing metal and gemstones";
 
   }
 
@@ -191,44 +147,26 @@ export function directProduct(
 
   ) {
 
-    direction = {
+    direction.prominence =
+      "Wallet occupies approximately 20% of the frame";
 
-      ...direction,
+    direction.visibility =
+      "Wallet fully visible";
 
-      prominence:
-        "Wallet occupies approximately 20% of the frame",
+    direction.placement =
+      "Foreground";
 
-      visibility:
-        "Wallet fully visible",
+    direction.orientation =
+      "Open naturally toward the camera";
 
-      placement:
-        "Foreground",
+    direction.handPlacement =
+      "Hands comfortably holding the wallet";
 
-      orientation:
-        "Open naturally toward the camera",
+    direction.subjectInteraction =
+      "Subject opening or receiving the wallet";
 
-      handPlacement:
-        "Hands comfortably holding the wallet",
-
-      subjectInteraction:
-        "Subject opening or receiving the wallet",
-
-      productLighting:
-        "Lighting emphasizes leather texture",
-
-      preserveDetails: [
-
-        "Keep wallet identical",
-
-        "Keep engraving identical",
-
-        "Do not change stitching",
-
-        "Do not alter leather color",
-
-      ],
-
-    };
+    direction.productLighting =
+      "Lighting emphasizes leather texture";
 
   }
 
@@ -243,7 +181,7 @@ export function directProduct(
   ) {
 
     direction.subjectInteraction =
-      "Subject is naturally presenting or receiving the gift";
+      "Subject naturally presenting or receiving the gift";
 
   }
 

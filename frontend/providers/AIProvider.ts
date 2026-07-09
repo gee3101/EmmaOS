@@ -3,20 +3,28 @@ import { CreativeAsset } from "../types/CreativeAsset";
 
 export interface AIProvider {
 
+  //------------------------------------------
+  // Provider Information
+  //------------------------------------------
+
   /**
-   * Provider display name
+   * Provider display name.
    */
   readonly name: string;
 
+  //------------------------------------------
+  // Creative Generation
+  //------------------------------------------
+
   /**
-   * Generate an image from a CreativeBrief
+   * Generate a completed creative image.
    */
   generateImage(
     brief: CreativeBrief
   ): Promise<CreativeAsset>;
 
   /**
-   * Generate a video from a CreativeBrief
+   * Generate a video creative.
    */
   generateVideo(
     brief: CreativeBrief

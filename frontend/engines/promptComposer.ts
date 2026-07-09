@@ -4,10 +4,43 @@ export function composeImagePrompt(
   brief: CreativeBrief
 ): string {
 
-  const preserveDetails =
-    brief.preserveDetails
-      .map(rule => `• ${rule}`)
+  //------------------------------------------
+  // Product Preservation
+  //------------------------------------------
+
+  const preservation = brief.preservation;
+
+  const sacredElements: string[] = [];
+
+  if (preservation.preserveJewelry)
+    sacredElements.push("Jewelry");
+
+  if (preservation.preserveArtwork)
+    sacredElements.push("Artwork");
+
+  if (preservation.preservePackaging)
+    sacredElements.push("Packaging");
+
+  if (preservation.preservePrintedText)
+    sacredElements.push("Printed Message");
+
+  if (preservation.preserveEngraving)
+    sacredElements.push("Engraving");
+
+  if (preservation.preserveBranding)
+    sacredElements.push("Brand Identity");
+
+  const sacredList =
+    sacredElements
+      .map(item => `• ${item}`)
       .join("\n");
+
+  const reasoning =
+    preservation.reasoning
+      .map(item => `• ${item}`)
+      .join("\n");
+
+  //------------------------------------------
 
   return `
 
@@ -18,62 +51,27 @@ ROLE
 You are one of the world's best luxury commercial
 advertising photographers.
 
-Your job is to create production-ready commercial
-photography.
+Create premium commercial photography only.
 
-You are NOT a graphic designer.
+Never create advertisements.
 
-You are NOT creating a Facebook advertisement.
+Never render text.
 
-You are NOT creating marketing graphics.
+Never render logos.
 
-Generate photography only.
+Never render watermarks.
+
+Never render typography.
 
 ====================================================
 MISSION
 ====================================================
 
-Create an emotionally compelling luxury lifestyle
-photograph.
+Create a luxury lifestyle photograph.
 
-The product is ALWAYS the hero.
+The uploaded product is always the hero.
 
-Everything in the image should support the product.
-
-====================================================
-CRITICAL RULES
-====================================================
-
-Generate ONLY photography.
-
-DO NOT render any text.
-
-DO NOT render headlines.
-
-DO NOT render typography.
-
-DO NOT render logos.
-
-DO NOT render captions.
-
-DO NOT render slogans.
-
-DO NOT render call-to-action buttons.
-
-DO NOT render pricing.
-
-DO NOT render promotional graphics.
-
-DO NOT render watermarks.
-
-The final image must contain ZERO readable text.
-
-Leave approximately 25% clean negative space in the
-upper-left corner for future advertising copy.
-
-The image should look like it came directly from a
-professional commercial photoshoot BEFORE the designer
-adds copy.
+Everything else supports the product.
 
 ====================================================
 PRODUCT
@@ -107,25 +105,7 @@ Audience
 
 ${brief.audience}
 
-Pain Point
-
-${brief.painPoint}
-
-Desire
-
-${brief.desire}
-
-Fear
-
-${brief.fear}
-
-Motivation
-
-${brief.motivation}
-
-====================================================
-EMOTIONAL STORY
-====================================================
+Story
 
 ${brief.story}
 
@@ -133,7 +113,7 @@ ${brief.story}
 CREATIVE DIRECTION
 ====================================================
 
-Visual Concept
+Concept
 
 ${brief.visualConcept}
 
@@ -198,61 +178,59 @@ Product Lighting
 ${brief.productLighting}
 
 ====================================================
-PRODUCT PROTECTION RULES
+PRODUCT PRESERVATION
 ====================================================
 
-${preserveDetails}
+Generation Pipeline
 
-The product must remain visually dominant.
+${preservation.generationPipeline}
 
-The viewer's eye should naturally be drawn to the
-product first.
+The following product elements are sacred and must
+remain visually identical:
 
-The product should remain one of the sharpest objects
-in the image.
+${sacredList}
 
-Human emotion should enhance the product instead of
-competing with it.
+Never redesign them.
+
+Never reinterpret them.
+
+Never simplify them.
+
+Never replace them.
+
+Only the environment, camera, lighting, people,
+and props may change.
 
 ====================================================
-PHOTOGRAPHY STYLE
+AI REASONING
+====================================================
+
+${reasoning}
+
+====================================================
+QUALITY
 ====================================================
 
 Luxury commercial photography.
 
 Magazine-quality composition.
 
-Professional product photography.
-
-Photorealistic.
+Warm cinematic lighting.
 
 Natural human emotion.
 
-Warm cinematic lighting.
+Photorealistic.
 
-Professional color grading.
+Elegant color grading.
 
-Balanced composition.
+Professional product photography.
 
-Shallow depth of field.
+The product remains the visual hero.
 
-Elegant luxury aesthetic.
+Leave approximately 25% clean negative space in the
+upper-left corner for future advertising copy.
 
-Single visual focal point.
-
-Premium advertising photography.
-
-====================================================
-FINAL QUALITY STANDARD
-====================================================
-
-The final image should resemble a luxury commercial
-photograph created by an award-winning advertising
-agency.
-
-It should feel authentic, emotionally compelling,
-premium, and immediately suitable for use in a
-high-performing paid social media campaign.
+Generate photography only.
 
 `;
 
@@ -264,11 +242,11 @@ export function composeVideoPrompt(
 
   return `
 
-Create a premium commercial lifestyle video.
+Create a luxury commercial lifestyle video.
 
 Generate cinematic footage only.
 
-Do not render text overlays.
+Do not render text.
 
 Do not render captions.
 
@@ -276,35 +254,17 @@ Do not render logos.
 
 Do not render watermarks.
 
-====================================================
-PRODUCT
-====================================================
+Product
 
 ${brief.productTitle}
 
-${brief.description}
+Story
 
-====================================================
-CUSTOMER
-====================================================
+${brief.story}
 
 Audience
 
 ${brief.audience}
-
-Emotion
-
-${brief.emotion}
-
-====================================================
-STORY
-====================================================
-
-${brief.story}
-
-====================================================
-CREATIVE DIRECTION
-====================================================
 
 Concept
 
@@ -322,50 +282,12 @@ Mood
 
 ${brief.mood}
 
-====================================================
-PRODUCT DIRECTION
-====================================================
+The uploaded product must remain visually identical.
 
-Hero Priority
+The product is always the visual hero.
 
-${brief.heroPriority}
-
-Prominence
-
-${brief.prominence}
-
-Visibility
-
-${brief.visibility}
-
-Focus
-
-${brief.focus}
-
-Placement
-
-${brief.placementDirection}
-
-Subject Interaction
-
-${brief.subjectInteraction}
-
-====================================================
-STYLE
-====================================================
-
-Luxury commercial filmmaking.
-
-Professional cinematography.
-
-Authentic human emotion.
-
-Natural movement.
-
-Warm cinematic lighting.
-
-The product remains the visual hero throughout the
-entire video.
+Generate premium commercial cinematography.
 
 `;
+
 }

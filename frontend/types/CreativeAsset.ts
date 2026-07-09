@@ -35,6 +35,24 @@ export interface CreativeAsset {
   placement: string;
 
   //------------------------------------------
+  // Marketing
+  //------------------------------------------
+
+  headline: string;
+
+  callToAction: string;
+
+  marketingAngle: string;
+
+  //------------------------------------------
+  // Creative Direction
+  //------------------------------------------
+
+  visualConcept: string;
+
+  mood: string;
+
+  //------------------------------------------
   // Generation
   //------------------------------------------
 

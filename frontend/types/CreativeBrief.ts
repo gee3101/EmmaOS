@@ -1,3 +1,6 @@
+import { ProductPreservation } from "./ProductPreservation";
+import { LayoutDirection } from "./LayoutDirection";
+
 export interface CreativeBrief {
 
   //------------------------------------------
@@ -106,7 +109,17 @@ export interface CreativeBrief {
 
   productLighting: string;
 
-  preserveDetails: string[];
+  //------------------------------------------
+  // Product Preservation
+  //------------------------------------------
+
+  preservation: ProductPreservation;
+
+  //------------------------------------------
+  // Layout Direction
+  //------------------------------------------
+
+  layout: LayoutDirection;
 
   //------------------------------------------
   // Prompt Generation

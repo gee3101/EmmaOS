@@ -2,6 +2,8 @@ import { ProcessedProduct } from "./processProducts";
 
 import { directCreative } from "./creativeDirector";
 import { directProduct } from "./productDirector";
+import { determineProductPreservation } from "./productPreservation";
+import { directLayout } from "./layoutDirector";
 
 import { CreativeBrief } from "../types/CreativeBrief";
 
@@ -12,7 +14,7 @@ export function buildCreativeBrief(
 ): CreativeBrief {
 
   //------------------------------------------
-  // Primary Strategy
+  // Strategy
   //------------------------------------------
 
   const strategy =
@@ -21,7 +23,7 @@ export function buildCreativeBrief(
       : null;
 
   //------------------------------------------
-  // Creative Director
+  // Creative Direction
   //------------------------------------------
 
   const creativeDirection =
@@ -31,14 +33,40 @@ export function buildCreativeBrief(
     );
 
   //------------------------------------------
-  // Product Director
+  // Product Direction
   //------------------------------------------
 
   const productDirection =
     directProduct(product);
 
   //------------------------------------------
-  // Return
+  // Product Preservation
+  //------------------------------------------
+
+  const preservation =
+    determineProductPreservation(
+      product
+    );
+
+  //------------------------------------------
+  // Layout Direction
+  //------------------------------------------
+
+  const layout =
+    directLayout({
+
+      platform,
+
+      placement,
+
+      preservation,
+
+      productDirection,
+
+    });
+
+  //------------------------------------------
+  // Build Creative Brief
   //------------------------------------------
 
   return {
@@ -197,8 +225,17 @@ export function buildCreativeBrief(
     productLighting:
       productDirection.productLighting,
 
-    preserveDetails:
-      productDirection.preserveDetails,
+    //------------------------------------------
+    // Product Preservation
+    //------------------------------------------
+
+    preservation,
+
+    //------------------------------------------
+    // Layout Direction
+    //------------------------------------------
+
+    layout,
 
     //------------------------------------------
     // Prompt Generation

@@ -1,6 +1,7 @@
 "use client";
 
 import { CreativeAsset } from "../../types/CreativeAsset";
+import CreativePreview from "./CreativePreview";
 
 interface CreativeWorkspaceProps {
   assets: CreativeAsset[];
@@ -58,7 +59,7 @@ export default function CreativeWorkspace({
 
         <div
           key={asset.id}
-          className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden"
+          className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
         >
 
           {/* ======================================
@@ -109,48 +110,20 @@ export default function CreativeWorkspace({
 
           <div className="flex items-center justify-center bg-slate-100 p-8">
 
-            {asset.type === "Image" && asset.url ? (
+            <CreativePreview
 
-              <img
-                src={asset.url}
-                alt={asset.name}
-                className="max-h-[600px] rounded-lg shadow-lg"
-              />
+              asset={asset}
 
-            ) : asset.type === "Video" && asset.url ? (
+              /*
+               * TODO:
+               * Replace this with your actual logo.
+               *
+               * Example:
+               * /branding/logo.png
+               */
+              logoUrl="/branding/logo.png"
 
-              <video
-                controls
-                className="max-h-[600px] rounded-lg shadow-lg"
-              >
-                <source
-                  src={asset.url}
-                />
-              </video>
-
-            ) : (
-
-              <div className="flex h-80 w-full items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-white">
-
-                <div className="text-center">
-
-                  <div className="text-5xl">
-
-                    {asset.type === "Video"
-                      ? "🎬"
-                      : "🖼"}
-
-                  </div>
-
-                  <p className="mt-4 text-slate-500">
-                    Preview unavailable
-                  </p>
-
-                </div>
-
-              </div>
-
-            )}
+            />
 
           </div>
 
@@ -201,9 +174,7 @@ export default function CreativeWorkspace({
                 </div>
 
                 <div>
-
                   {new Date(asset.createdAt).toLocaleString()}
-
                 </div>
 
               </div>
@@ -219,19 +190,19 @@ export default function CreativeWorkspace({
           <div className="flex flex-wrap gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4">
 
             <button
-              className="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white hover:bg-blue-700"
+              className="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white transition hover:bg-blue-700"
             >
               ⬇ Download
             </button>
 
             <button
-              className="rounded-lg bg-slate-700 px-5 py-2 font-medium text-white hover:bg-slate-800"
+              className="rounded-lg bg-slate-700 px-5 py-2 font-medium text-white transition hover:bg-slate-800"
             >
               🔄 Regenerate
             </button>
 
             <button
-              className="rounded-lg border border-slate-300 bg-white px-5 py-2 hover:bg-slate-100"
+              className="rounded-lg border border-slate-300 bg-white px-5 py-2 transition hover:bg-slate-100"
             >
               ⭐ Favorite
             </button>
