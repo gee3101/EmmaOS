@@ -37,7 +37,7 @@ export default function GenerateButtons({
     useState(false);
 
   //------------------------------------------
-  // Generate Image
+  // Lifestyle Image
   //------------------------------------------
 
   async function handleGenerateImage() {
@@ -57,7 +57,7 @@ export default function GenerateButtons({
 
       console.error(err);
 
-      alert("Unable to generate image.");
+      alert("Unable to generate lifestyle image.");
 
     } finally {
 
@@ -140,6 +140,7 @@ export default function GenerateButtons({
     );
 
     alert("Image prompt copied.");
+
   }
 
   //------------------------------------------
@@ -153,6 +154,7 @@ export default function GenerateButtons({
     );
 
     alert("Video prompt copied.");
+
   }
 
   //------------------------------------------
@@ -181,8 +183,8 @@ export default function GenerateButtons({
           className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
         >
           {generatingImage
-            ? "Generating Image..."
-            : "🖼 Generate Image"}
+            ? "Generating Lifestyle Image..."
+            : "🖼 Lifestyle Image"}
         </button>
 
         <button
