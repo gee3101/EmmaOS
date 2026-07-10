@@ -26,6 +26,10 @@ import {
   placementEngine,
 } from "../Placement/PlacementEngine";
 
+import {
+  brandOverlayService,
+} from "../Brand/BrandOverlayService";
+
 export interface CompositeCreativeRequest {
 
   //------------------------------------------
@@ -63,7 +67,7 @@ export class CompositeCreativePipeline {
     //------------------------------------------
 
     console.log("");
-    console.log("Step 1 / 5");
+    console.log("Step 1 / 6");
     console.log("Generating lifestyle background...");
 
     const background =
@@ -77,7 +81,7 @@ export class CompositeCreativePipeline {
     //------------------------------------------
 
     console.log("");
-    console.log("Step 2 / 5");
+    console.log("Step 2 / 6");
     console.log("Removing product background...");
 
     const removedBackground =
@@ -91,7 +95,7 @@ export class CompositeCreativePipeline {
     //------------------------------------------
 
     console.log("");
-    console.log("Step 3 / 5");
+    console.log("Step 3 / 6");
     console.log("Trimming transparent borders...");
 
     const transparentProduct =
@@ -105,7 +109,7 @@ export class CompositeCreativePipeline {
     //------------------------------------------
 
     console.log("");
-    console.log("Step 4 / 5");
+    console.log("Step 4 / 6");
     console.log("Calculating product placement...");
 
     const metadata =
@@ -143,12 +147,12 @@ export class CompositeCreativePipeline {
 
     //------------------------------------------
     // Step 5
-    // Composite
+    // Composite Product
     //------------------------------------------
 
     console.log("");
-    console.log("Step 5 / 5");
-    console.log("Compositing final creative...");
+    console.log("Step 5 / 6");
+    console.log("Compositing product...");
 
     const composite =
       await canvasImageComposer.compose({
@@ -165,10 +169,24 @@ export class CompositeCreativePipeline {
 
       });
 
-    console.log("");
-    console.log("Composite complete.");
+    //------------------------------------------
+    // Step 6
+    // Apply Brand Overlay
+    //------------------------------------------
 
-    return composite;
+    console.log("");
+    console.log("Step 6 / 6");
+    console.log("Applying Treasured Expressions branding...");
+
+    const branded =
+      await brandOverlayService.apply(
+        composite
+      );
+
+    console.log("");
+    console.log("Creative complete.");
+
+    return branded;
 
   }
 

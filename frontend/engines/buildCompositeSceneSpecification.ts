@@ -9,25 +9,79 @@ import {
   LightingStyle,
 } from "../types/CompositeSceneSpecification";
 
+import {
+  buildAdComposition,
+} from "./buildAdComposition";
+
+import {
+  buildSceneComposition,
+} from "./buildSceneComposition";
+
+import {
+  buildPresentationAnchor,
+} from "./presentationAnchorEngine";
+
 export function buildCompositeSceneSpecification(
   brief: CreativeBrief
 ): CompositeSceneSpecification {
 
   //------------------------------------------
-  // Determine Scene
+  // Advertisement Composition
+  //------------------------------------------
+
+  const adComposition =
+    buildAdComposition(
+      brief
+    );
+
+  //------------------------------------------
+  // Scene Composition
+  //------------------------------------------
+
+  const sceneComposition =
+    buildSceneComposition(
+      brief,
+      adComposition
+    );
+
+  //------------------------------------------
+  // Presentation Anchor
+  //------------------------------------------
+
+  const presentationAnchor =
+    buildPresentationAnchor(
+      brief
+    );
+
+  //------------------------------------------
+  // Placement
   //------------------------------------------
 
   const placement =
-    determinePlacement(brief);
-
-  const cameraAngle =
-    determineCamera(brief);
-
-  const lighting =
-    determineLighting(brief);
+    determinePlacement(
+      brief
+    );
 
   //------------------------------------------
-  // Build Specification
+  // Camera
+  //------------------------------------------
+
+  const cameraAngle =
+    determineCamera(
+      brief
+    );
+
+  //------------------------------------------
+  // Lighting
+  //------------------------------------------
+
+  const lighting =
+    determineLighting(
+      brief
+    );
+
+  //------------------------------------------
+  // Return
   //------------------------------------------
 
   return {
@@ -43,11 +97,16 @@ export function buildCompositeSceneSpecification(
       brief.strategy,
 
     //------------------------------------------
-    // Prompt
+    // EmmaOS 2.0
     //------------------------------------------
 
-    // Prompt is generated later by
-    // backgroundPromptBuilder.ts
+    sceneComposition,
+
+    presentationAnchor,
+
+    //------------------------------------------
+    // Prompt
+    //------------------------------------------
 
     backgroundPrompt:
       "",
@@ -68,17 +127,31 @@ export function buildCompositeSceneSpecification(
     productAlignment:
       placement.alignment,
 
+    //------------------------------------------
+    // Reserved Presentation Area
+    //------------------------------------------
+
     reservedProductArea: {
 
-      x: 58,
+      x:
+        presentationAnchor.centerX -
+        (presentationAnchor.width / 2),
 
-      y: 18,
+      y:
+        presentationAnchor.centerY -
+        (presentationAnchor.height / 2),
 
-      width: 32,
+      width:
+        presentationAnchor.width,
 
-      height: 60,
+      height:
+        presentationAnchor.height,
 
     },
+
+    //------------------------------------------
+    // Safe Margins
+    //------------------------------------------
 
     safeMargins: {
 
@@ -93,14 +166,14 @@ export function buildCompositeSceneSpecification(
     },
 
     //------------------------------------------
-    // Orientation
+    // Product Orientation
     //------------------------------------------
 
     productRotation:
-      0,
+      presentationAnchor.rotation,
 
     //------------------------------------------
-    // Scaling
+    // Product Scaling
     //------------------------------------------
 
     productScale: {
@@ -111,7 +184,8 @@ export function buildCompositeSceneSpecification(
 
       maxCoverage: 35,
 
-      preserveAspectRatio: true,
+      preserveAspectRatio:
+        true,
 
     },
 
@@ -122,15 +196,17 @@ export function buildCompositeSceneSpecification(
     cameraAngle,
 
     //------------------------------------------
-    // Environment
+    // Compatibility Layer
     //------------------------------------------
 
     environment:
-      brief.environment,
+      sceneComposition.environment.location,
 
-    foregroundElements: [],
+    foregroundElements:
+      sceneComposition.environment.foregroundObjects,
 
-    backgroundElements: [],
+    backgroundElements:
+      sceneComposition.environment.backgroundObjects,
 
     //------------------------------------------
     // Lighting
@@ -145,20 +221,20 @@ export function buildCompositeSceneSpecification(
     // Subjects
     //------------------------------------------
 
-    subjects: [
+    subjects:
+      sceneComposition.subjects.map(
+        subject =>
+          subject.description
+      ),
 
-      brief.audience,
-
-    ],
-
-    subjectActions: [
-
-      brief.subjectInteraction,
-
-    ],
+    subjectActions:
+      sceneComposition.subjects.map(
+        subject =>
+          subject.handPose
+      ),
 
     emotionalTone:
-      brief.emotion,
+      sceneComposition.emotionalMoment,
 
     //------------------------------------------
     // Rendering
@@ -199,6 +275,12 @@ export function buildCompositeSceneSpecification(
       brief.hook,
 
       brief.story,
+
+      presentationAnchor.interaction,
+
+      ...sceneComposition.constraints,
+
+      ...sceneComposition.quality,
 
     ],
 

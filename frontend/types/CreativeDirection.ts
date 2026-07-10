@@ -7,14 +7,40 @@ export interface CreativeDirection {
   concept: string;
 
   //------------------------------------------
+  // Story
+  //------------------------------------------
+
+  relationship: string;
+
+  occasion: string;
+
+  emotion: string;
+
+  storyMoment: string;
+
+  //------------------------------------------
   // Scene
   //------------------------------------------
 
   scene: string;
 
+  environment: string;
+
   location: string;
 
   timeOfDay: string;
+
+  //------------------------------------------
+  // Subject Direction
+  //------------------------------------------
+
+  subjectLayout: string;
+
+  subjectExpression: string;
+
+  bodyLanguage: string;
+
+  handPlacement: string;
 
   //------------------------------------------
   // Photography
@@ -24,9 +50,13 @@ export interface CreativeDirection {
 
   cameraAngle: string;
 
+  cameraDistance: string;
+
   focalLength: string;
 
   depthOfField: string;
+
+  focalPoint: string;
 
   //------------------------------------------
   // Lighting
@@ -39,24 +69,22 @@ export interface CreativeDirection {
   colorPalette: string;
 
   //------------------------------------------
-  // Product
+  // Product Direction
   //------------------------------------------
+
+  heroPriority: string;
 
   productPlacement: string;
 
   productVisibility: string;
 
-  //------------------------------------------
-  // Subject
-  //------------------------------------------
-
-  subjectExpression: string;
-
-  bodyLanguage: string;
+  productOrientation: string;
 
   //------------------------------------------
-  // Advertising
+  // Layout
   //------------------------------------------
+
+  negativeSpace: string;
 
   copySpace: string;
 

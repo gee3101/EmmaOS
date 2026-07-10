@@ -10,6 +10,10 @@ import {
   getPlacementStrategy,
 } from "./PlacementStrategy";
 
+import {
+  ProductIntegration,
+} from "../../engines/productIntegrationEngine";
+
 export interface CalculatePlacementRequest {
 
   //------------------------------------------
@@ -17,6 +21,12 @@ export interface CalculatePlacementRequest {
   //------------------------------------------
 
   scene: CompositeSceneSpecification;
+
+  //------------------------------------------
+  // Product Integration
+  //------------------------------------------
+
+  integration: ProductIntegration;
 
   //------------------------------------------
   // Background
@@ -44,6 +54,8 @@ export function calculatePlacement(
 
     scene,
 
+    integration,
+
     backgroundWidth,
 
     backgroundHeight,
@@ -64,68 +76,28 @@ export function calculatePlacement(
     );
 
   //------------------------------------------
-  // Reserved Area
+  // Integration Anchor
   //------------------------------------------
 
-  const reserved =
-    scene.reservedProductArea;
-
-  //------------------------------------------
-  // Safe Margins
-  //------------------------------------------
-
-  const margins =
-    scene.safeMargins ?? {
-
-      top: 0,
-
-      right: 0,
-
-      bottom: 0,
-
-      left: 0,
-
-    };
-
-  //------------------------------------------
-  // Convert Reserved Area To Pixels
-  //------------------------------------------
-
-  const reservedLeft =
+  const centerX =
     backgroundWidth *
-    (reserved.x / 100);
+    (integration.centerX / 100);
 
-  const reservedTop =
+  const centerY =
     backgroundHeight *
-    (reserved.y / 100);
+    (integration.centerY / 100);
 
-  const reservedWidth =
+  //------------------------------------------
+  // Target Area
+  //------------------------------------------
+
+  const targetWidth =
     backgroundWidth *
-    (reserved.width / 100);
+    (integration.widthPercent / 100);
 
-  const reservedHeight =
+  const targetHeight =
     backgroundHeight *
-    (reserved.height / 100);
-
-  //------------------------------------------
-  // Apply Safe Margins
-  //------------------------------------------
-
-  const usableLeft =
-    reservedLeft +
-    (backgroundWidth * margins.left / 100);
-
-  const usableTop =
-    reservedTop +
-    (backgroundHeight * margins.top / 100);
-
-  const usableWidth =
-    reservedWidth -
-    (backgroundWidth * (margins.left + margins.right) / 100);
-
-  const usableHeight =
-    reservedHeight -
-    (backgroundHeight * (margins.top + margins.bottom) / 100);
+    (integration.heightPercent / 100);
 
   //------------------------------------------
   // Preserve Aspect Ratio
@@ -136,21 +108,25 @@ export function calculatePlacement(
     productHeight;
 
   //------------------------------------------
-  // Fit Product Into Reserved Area
+  // Initial Size
   //------------------------------------------
 
   let width =
-    usableWidth *
+    targetWidth *
     strategy.scaleMultiplier;
 
   let height =
     width /
     aspectRatio;
 
-  if (height > usableHeight) {
+  //------------------------------------------
+  // Fit Height
+  //------------------------------------------
+
+  if (height > targetHeight) {
 
     height =
-      usableHeight *
+      targetHeight *
       strategy.scaleMultiplier;
 
     width =
@@ -160,19 +136,80 @@ export function calculatePlacement(
   }
 
   //------------------------------------------
-  // Center Product
+  // Clamp
+  //------------------------------------------
+
+  width =
+    Math.min(
+      width,
+      targetWidth
+    );
+
+  height =
+    Math.min(
+      height,
+      targetHeight
+    );
+
+  //------------------------------------------
+  // Final Position
   //------------------------------------------
 
   const left =
-    usableLeft +
-    ((usableWidth - width) / 2);
+    centerX -
+    (width / 2);
 
   const top =
-    usableTop +
-    ((usableHeight - height) / 2);
+    centerY -
+    (height / 2);
 
   //------------------------------------------
-  // Return Placement
+  // Debug
+  //------------------------------------------
+
+  console.log("");
+  console.log("=====================================");
+  console.log("Placement Engine");
+  console.log("=====================================");
+
+  console.log("");
+
+  console.log("Anchor");
+
+  console.log({
+
+    centerX:
+      integration.centerX,
+
+    centerY:
+      integration.centerY,
+
+    width:
+      integration.widthPercent,
+
+    height:
+      integration.heightPercent,
+
+  });
+
+  console.log("");
+
+  console.log("Pixels");
+
+  console.log({
+
+    left,
+
+    top,
+
+    width,
+
+    height,
+
+  });
+
+  //------------------------------------------
+  // Return
   //------------------------------------------
 
   return {
@@ -186,7 +223,7 @@ export function calculatePlacement(
     height,
 
     rotation:
-      scene.productRotation,
+      integration.perspective.rotation,
 
   };
 

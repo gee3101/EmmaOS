@@ -10,6 +10,11 @@ import {
   calculatePlacement,
 } from "./calculatePlacement";
 
+import {
+  buildProductIntegration,
+  ProductIntegration,
+} from "../../engines/productIntegrationEngine";
+
 export interface PlacementRequest {
 
   //------------------------------------------
@@ -46,10 +51,31 @@ export class PlacementEngine {
     request: PlacementRequest
   ): Placement {
 
+    //------------------------------------------
+    // Build Product Integration Plan
+    //------------------------------------------
+
+    const integration: ProductIntegration =
+      buildProductIntegration(
+        request.scene
+      );
+
+    console.log("");
+    console.log("=====================================");
+    console.log("Product Integration");
+    console.log("=====================================");
+    console.log(integration);
+
+    //------------------------------------------
+    // Calculate Final Placement
+    //------------------------------------------
+
     return calculatePlacement({
 
       scene:
         request.scene,
+
+      integration,
 
       backgroundWidth:
         request.backgroundWidth,

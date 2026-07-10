@@ -1,3 +1,11 @@
+import {
+  SceneComposition,
+} from "./SceneComposition";
+
+import {
+  PresentationAnchor,
+} from "./PresentationAnchor";
+
 export type ProductPlacement =
   | "center"
   | "upper-left"
@@ -100,6 +108,14 @@ export interface CompositeSceneSpecification {
   strategy: string;
 
   //------------------------------------------
+  // EmmaOS 2.0
+  //------------------------------------------
+
+  sceneComposition: SceneComposition;
+
+  presentationAnchor: PresentationAnchor;
+
+  //------------------------------------------
   // Prompt
   //------------------------------------------
 
@@ -141,6 +157,7 @@ export interface CompositeSceneSpecification {
 
   //------------------------------------------
   // Environment
+  // Compatibility Layer
   //------------------------------------------
 
   environment: string;
@@ -151,6 +168,7 @@ export interface CompositeSceneSpecification {
 
   //------------------------------------------
   // Lighting
+  // Compatibility Layer
   //------------------------------------------
 
   lighting: LightingStyle;
@@ -159,6 +177,7 @@ export interface CompositeSceneSpecification {
 
   //------------------------------------------
   // Subject Direction
+  // Compatibility Layer
   //------------------------------------------
 
   subjects: string[];

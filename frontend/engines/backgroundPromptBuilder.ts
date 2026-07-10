@@ -1,113 +1,275 @@
-import { CompositeSceneSpecification } from "../types/CompositeSceneSpecification";
+import {
+  CompositeSceneSpecification,
+} from "../types/CompositeSceneSpecification";
 
 export function buildBackgroundPrompt(
-  specification: CompositeSceneSpecification
+  scene: CompositeSceneSpecification
 ): string {
 
   //------------------------------------------
-  // Helpers
+  // Scene Composition
   //------------------------------------------
 
-  const foreground =
-    specification.foregroundElements.length > 0
-      ? specification.foregroundElements.join(", ")
-      : "Minimal tasteful décor";
+  const composition =
+    scene.sceneComposition;
 
-  const background =
-    specification.backgroundElements.length > 0
-      ? specification.backgroundElements.join(", ")
-      : "Soft out-of-focus background";
+  //------------------------------------------
+  // Subjects
+  //------------------------------------------
 
   const subjects =
-    specification.subjects.length > 0
-      ? specification.subjects.join(", ")
-      : "People";
+    composition.subjects
 
-  const actions =
-    specification.subjectActions.length > 0
-      ? specification.subjectActions.join(", ")
-      : "Naturally interacting";
+      .map(subject => `
+
+Role:
+${subject.role}
+
+Description:
+${subject.description}
+
+Position:
+${subject.position}
+
+Body Pose:
+${subject.bodyPose}
+
+Hand Pose:
+${subject.handPose}
+
+Facial Expression:
+${subject.facialExpression}
+
+Eye Direction:
+${subject.eyeDirection}
+
+`)
+
+      .join("\n");
+
+  //------------------------------------------
+  // Constraints
+  //------------------------------------------
+
+  const constraints =
+    composition.constraints
+
+      .map(rule => `• ${rule}`)
+
+      .join("\n");
+
+  //------------------------------------------
+  // Quality
+  //------------------------------------------
+
+  const quality =
+    composition.quality
+
+      .map(rule => `• ${rule}`)
+
+      .join("\n");
 
   //------------------------------------------
   // Prompt
   //------------------------------------------
 
   return `
-You are an award-winning commercial advertising photographer working for a luxury lifestyle brand.
 
-Your task is to create ONLY the photographic background for a premium social media advertisement.
+You are simultaneously acting as:
 
-The actual product will be professionally composited into the photograph after generation.
+• Creative Director
 
-Your responsibility is to create a believable environment that naturally supports that product.
+• Art Director
+
+• Commercial Photographer
+
+• Product Stylist
+
+• Advertising Agency
+
+Your responsibility is to produce ONLY the BACKGROUND photograph.
+
+The uploaded product will be composited afterwards.
+
+Never generate the product.
+
+Never redesign the product.
+
+Everything you create must support the future placement of the original uploaded product.
 
 ==================================================
-PRIMARY OBJECTIVE
+MISSION
 ==================================================
 
-Create a genuine emotional lifestyle photograph.
+Create a premium commercial lifestyle photograph.
 
-The people should appear authentic.
+The image should appear to have been photographed by an experienced luxury advertising agency.
 
-The scene should feel candid rather than posed.
+The result should be indistinguishable from genuine professional photography.
 
-The final result should resemble a premium Facebook advertisement photographed by a professional commercial agency.
+The environment should naturally guide the viewer's eye toward the future product location.
 
 ==================================================
-SUBJECTS
+CRITICAL REQUIREMENTS
+==================================================
+
+The uploaded product DOES NOT exist yet.
+
+Pretend it will be inserted after the photograph has been taken.
+
+Everything in the image must naturally support this future placement.
+
+Never create anything occupying the product space.
+
+Never imply another product.
+
+Never create packaging.
+
+Never create jewelry.
+
+==================================================
+HUMAN ANATOMY
+==================================================
+
+Exactly two adults.
+
+Exactly one head per person.
+
+Exactly one neck per person.
+
+Exactly one torso per person.
+
+Exactly two shoulders per person.
+
+Exactly two arms per person.
+
+Exactly two hands per person.
+
+Exactly five fingers per hand.
+
+Hands remain naturally attached.
+
+Natural elbows.
+
+Natural wrists.
+
+Natural body proportions.
+
+Natural posture.
+
+Natural perspective.
+
+Natural shadows.
+
+No duplicated limbs.
+
+No merged bodies.
+
+No floating hands.
+
+No detached arms.
+
+No extra fingers.
+
+No missing fingers.
+
+No cropped faces.
+
+No cropped hands.
+
+No distorted anatomy.
+
+==================================================
+SCENE STORY
+==================================================
+
+Story:
+
+${composition.story}
+
+Emotion:
+
+${composition.emotionalMoment}
+
+The scene should communicate authentic human emotion.
+
+Nothing should feel posed.
+
+Everything should feel naturally observed.
+
+==================================================
+SUBJECT DIRECTION
 ==================================================
 
 ${subjects}
 
-==================================================
-ACTIONS
-==================================================
+The subjects should behave naturally.
 
-${actions}
+No exaggerated gestures.
 
-The subjects should naturally present an invisible object.
+No theatrical posing.
 
-Their hands should be positioned around empty space.
+Expressions should feel genuine.
 
-That empty space should feel intentional.
-
-Nothing should occupy the presentation space.
-
-Their attention should naturally focus on each other or the empty presentation area.
+Body language should appear relaxed.
 
 ==================================================
-ENVIRONMENT
+PRODUCT STAGING
 ==================================================
 
-${specification.environment}
+Imagine an invisible greeting card exists between the two people.
+
+The invisible object is approximately:
+
+6 inches wide
+
+8 inches tall
+
+The invisible object exists only to guide composition.
+
+It MUST NOT actually appear.
+
+The presentation area should remain completely empty.
+
+The empty area should naturally become the visual focal point.
+
+The presentation area should remain below both faces.
+
+The presentation area should remain above waist level.
+
+The presentation area should occupy approximately 18–22% of the image width.
+
+Both people naturally orient their attention toward this invisible presentation area.
+
+Hands should frame the invisible object without touching it.
+
+No body part should overlap this area.
+
+No furniture should overlap this area.
+
+No decorations should overlap this area.
 
 ==================================================
-FOREGROUND
+SUBJECT SPACING
 ==================================================
 
-${foreground}
+The two adults should stand naturally.
 
-==================================================
-BACKGROUND
-==================================================
+Maintain comfortable conversational distance.
 
-${background}
+Approximately three feet apart.
 
-==================================================
-LIGHTING
-==================================================
+Bodies angled slightly toward each other.
 
-Lighting Style:
+Shoulders remain outside the presentation space.
 
-${specification.lighting}
+Faces remain above the presentation space.
 
-Create soft natural lighting.
+Hands extend naturally toward the presentation space.
 
-Illuminate the presentation area evenly.
+The presentation space remains centered between them.
 
-Use realistic shadows.
-
-Avoid harsh contrast.
+Leave generous negative space around the presentation area.
 
 ==================================================
 CAMERA
@@ -115,89 +277,319 @@ CAMERA
 
 Camera Angle:
 
-${specification.cameraAngle}
+${composition.camera.angle}
 
-Professional full-frame DSLR.
+Camera Height:
 
-50mm prime lens.
+${composition.camera.height}
 
-Natural depth of field.
+Lens:
+
+${composition.camera.focalLength}
+
+Depth of Field:
+
+${composition.camera.depthOfField}
+
+Photography Style:
+
+${composition.camera.compositionStyle}
+
+Photographed using a professional full-frame DSLR.
 
 Luxury commercial photography.
 
-==================================================
-STYLE
-==================================================
+Natural perspective.
 
-Ultra photorealistic.
-
-Premium lifestyle photography.
-
-Natural skin tones.
-
-Magazine-quality composition.
-
-Elegant framing.
-
-Clean composition.
-
-Balanced visual hierarchy.
-
-The empty presentation space should naturally become the visual focal point.
+Magazine-quality framing.
 
 ==================================================
-IMPORTANT
+LIGHTING
+==================================================
+
+Lighting Style:
+
+${composition.lighting.style}
+
+Direction:
+
+${composition.lighting.direction}
+
+Intensity:
+
+${composition.lighting.intensity}
+
+Shadow Style:
+
+${composition.lighting.shadowStyle}
+
+Color Temperature:
+
+${composition.lighting.colorTemperature}
+
+Use believable commercial lighting.
+
+Illuminate the presentation area evenly.
+
+Natural falloff.
+
+Soft shadows.
+
+No harsh hotspots.
+
+No unrealistic rim lighting.
+
+==================================================
+ENVIRONMENT
+==================================================
+
+Location:
+
+${composition.environment.location}
+
+Time of Day:
+
+${composition.environment.timeOfDay}
+
+Mood:
+
+${composition.environment.mood}
+
+Foreground Objects:
+
+${composition.environment.foregroundObjects.join(", ")}
+
+Background Objects:
+
+${composition.environment.backgroundObjects.join(", ")}
+
+Background Blur:
+
+${composition.environment.backgroundBlur}
+
+The environment should enhance the emotional story.
+
+Nothing should distract from the future product placement.
+==================================================
+COMPOSITION
+==================================================
+
+Compose the scene like a luxury advertising campaign.
+
+The product does not yet exist.
+
+Everything in the composition should naturally lead the viewer's eye toward the presentation area.
+
+Use professional visual hierarchy.
+
+Maintain balance.
+
+Avoid visual clutter.
+
+Maintain generous negative space.
+
+The presentation area should become the strongest visual anchor.
+
+Faces should become the second visual anchor.
+
+Avoid symmetry that feels artificial.
+
+Create believable candid interaction.
+
+==================================================
+AI FAILURE PREVENTION
+==================================================
+
+The image MUST NOT contain:
+
+Extra people.
+
+Extra heads.
+
+Extra arms.
+
+Extra hands.
+
+Extra fingers.
+
+Missing fingers.
+
+Detached limbs.
+
+Merged bodies.
+
+Floating hands.
+
+Floating objects.
+
+Distorted anatomy.
+
+Twisted joints.
+
+Impossible poses.
+
+Crossed arms that hide anatomy.
+
+Faces behind hands.
+
+Faces behind objects.
+
+People cropped at the forehead.
+
+People cropped at the chin.
+
+People cropped at the wrists.
+
+People cropped at the elbows.
+
+Hands clipped by the edge of the frame.
+
+Presentation space clipped by the frame.
+
+The photograph should resemble a genuine professional photoshoot.
+
+==================================================
+PRODUCT PLACEMENT AWARENESS
+==================================================
+
+Imagine the original uploaded product will be inserted after the photograph has been completed.
+
+The environment should naturally anticipate this.
+
+The product location should feel intentional.
+
+The viewer should immediately understand that something meaningful belongs there.
+
+No object should compete with this location.
+
+Never create another visual hero.
+
+The uploaded product will always become the visual hero.
+
+==================================================
+QUALITY REQUIREMENTS
+==================================================
+
+${quality}
+
+Additional Quality Standards:
+
+• Ultra photorealistic.
+
+• Luxury commercial advertising.
+
+• Magazine-quality photography.
+
+• Natural human emotion.
+
+• Beautiful skin tones.
+
+• Realistic fabric texture.
+
+• Natural hair.
+
+• Physically accurate lighting.
+
+• Accurate perspective.
+
+• Professional composition.
+
+• Clean visual storytelling.
+
+• Elegant depth of field.
+
+• Premium color grading.
+
+• Cinematic realism.
+
+==================================================
+ABSOLUTELY NEVER GENERATE
 ==================================================
 
 Do NOT generate:
 
-• Jewelry
+Jewelry.
 
-• Necklaces
+Necklaces.
 
-• Rings
+Bracelets.
 
-• Watches
+Watches.
 
-• Gift boxes
+Rings.
 
-• Message cards
+Gift boxes.
 
-• Greeting cards
+Greeting cards.
 
-• Packaging
+Message cards.
 
-• Wrapped presents
+Packaging.
 
-• Pedestals
+Wrapped presents.
 
-• Display stands
+Shopping bags.
 
-• Shopping bags
+Display stands.
 
-• Flowers being held
+Pedestals.
 
-• Decorative props in the presentation space
+Flowers being held.
 
-• Text
+Balloons.
 
-• Logos
+Logos.
 
-• Branding
+Branding.
 
-• Watermarks
+Advertising graphics.
 
-• UI elements
+Text.
+
+Captions.
+
+Watermarks.
+
+QR codes.
+
+Barcodes.
+
+Price tags.
+
+Buttons.
+
+UI elements.
+
+Duplicate people.
+
+Additional family members.
+
+Pets.
+
+Vehicles unless explicitly required.
+
+Objects occupying the presentation space.
 
 ==================================================
 FINAL GOAL
 ==================================================
 
-Produce a believable commercial lifestyle photograph that appears intentionally staged for a product that will be composited later.
+Produce an ultra-realistic commercial lifestyle photograph suitable for a premium luxury social media advertisement.
 
-The empty presentation space should feel completely natural.
+The photograph should appear professionally art directed.
 
-The viewer should immediately understand that something meaningful belongs there, while no object has yet been placed.
+The people should feel authentic.
+
+The environment should support the emotional story.
+
+The presentation area should remain intentionally empty.
+
+The anatomy should be flawless.
+
+The composition should naturally guide the viewer toward the future placement of the uploaded product.
+
+The final image should be indistinguishable from a professionally photographed advertising campaign.
+
 `.trim();
 
 }
