@@ -20,6 +20,9 @@ export function directCreative(
   let location =
     "Elegant family home";
 
+  let environment =
+    location;
+
   let timeOfDay =
     "Golden Hour";
 
@@ -29,11 +32,17 @@ export function directCreative(
   let cameraAngle =
     "Eye Level";
 
+  let cameraDistance =
+    "Medium Shot";
+
   let focalLength =
     "85mm";
 
   let depthOfField =
     "Shallow";
+
+  let focalPoint =
+    "Product";
 
   let lighting =
     "Warm natural window light";
@@ -50,11 +59,26 @@ export function directCreative(
   let productVisibility =
     "Fully visible";
 
+  let productOrientation =
+    "Natural";
+
+  let heroPriority =
+    "Primary";
+
+  let subjectLayout =
+    "Centered";
+
   let subjectExpression =
     "Genuine emotional smile";
 
   let bodyLanguage =
     "Natural relaxed posture";
+
+  let handPlacement =
+    "Naturally presenting the product";
+
+  let negativeSpace =
+    "Upper Left";
 
   let copySpace =
     "Upper Left";
@@ -78,6 +102,9 @@ export function directCreative(
 
       location =
         "Luxury interior";
+
+      environment =
+        location;
 
       lighting =
         "Soft spotlight";
@@ -105,6 +132,9 @@ export function directCreative(
         "Excitement";
 
       copySpace =
+        "Top Center";
+
+      negativeSpace =
         "Top Center";
 
       break;
@@ -152,7 +182,6 @@ export function directCreative(
       break;
 
     case "Emotional":
-
     default:
 
       break;
@@ -172,6 +201,9 @@ export function directCreative(
 
       location =
         "Warm family home";
+
+      environment =
+        location;
 
       break;
 
@@ -209,6 +241,9 @@ export function directCreative(
       location =
         "Beautifully decorated living room";
 
+      environment =
+        location;
+
       colorPalette =
         "Red, gold, evergreen";
 
@@ -218,6 +253,9 @@ export function directCreative(
 
       location =
         "Elegant dinner setting";
+
+      environment =
+        location;
 
       lighting =
         "Golden candlelight";
@@ -236,12 +274,18 @@ export function directCreative(
       location =
         "Bright family kitchen";
 
+      environment =
+        location;
+
       break;
 
     case "valentine's day":
 
       location =
         "Romantic evening";
+
+      environment =
+        location;
 
       colorPalette =
         "Rose, cream, gold";
@@ -262,6 +306,9 @@ export function directCreative(
     productVisibility =
       "Pendant fully visible";
 
+    focalPoint =
+      "Pendant";
+
   }
 
   //------------------------------------------
@@ -270,21 +317,71 @@ export function directCreative(
 
   return {
 
+    //------------------------------------------
+    // Creative Vision
+    //------------------------------------------
+
     concept,
 
+    //------------------------------------------
+    // Story
+    //------------------------------------------
+
+    relationship:
+      product.relationship,
+
+    occasion:
+      product.occasion,
+
+    emotion:
+      product.emotion,
+
+    storyMoment:
+      scene,
+
+    //------------------------------------------
+    // Scene
+    //------------------------------------------
+
     scene,
+
+    environment,
 
     location,
 
     timeOfDay,
 
+    //------------------------------------------
+    // Subject Direction
+    //------------------------------------------
+
+    subjectLayout,
+
+    subjectExpression,
+
+    bodyLanguage,
+
+    handPlacement,
+
+    //------------------------------------------
+    // Photography
+    //------------------------------------------
+
     composition,
 
     cameraAngle,
 
+    cameraDistance,
+
     focalLength,
 
     depthOfField,
+
+    focalPoint,
+
+    //------------------------------------------
+    // Lighting
+    //------------------------------------------
 
     lighting,
 
@@ -292,13 +389,23 @@ export function directCreative(
 
     colorPalette,
 
+    //------------------------------------------
+    // Product Direction
+    //------------------------------------------
+
+    heroPriority,
+
     productPlacement,
 
     productVisibility,
 
-    subjectExpression,
+    productOrientation,
 
-    bodyLanguage,
+    //------------------------------------------
+    // Layout
+    //------------------------------------------
+
+    negativeSpace,
 
     copySpace,
 

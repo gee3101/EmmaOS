@@ -6,6 +6,10 @@ import {
   PresentationAnchor,
 } from "./PresentationAnchor";
 
+import {
+  AdCompositionSpecification,
+} from "./AdCompositionSpecification";
+
 export type ProductPlacement =
   | "center"
   | "upper-left"
@@ -108,7 +112,13 @@ export interface CompositeSceneSpecification {
   strategy: string;
 
   //------------------------------------------
-  // EmmaOS 2.0
+  // Advertisement Composition
+  //------------------------------------------
+
+  adComposition: AdCompositionSpecification;
+
+  //------------------------------------------
+  // Scene Composition
   //------------------------------------------
 
   sceneComposition: SceneComposition;

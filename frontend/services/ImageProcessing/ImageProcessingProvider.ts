@@ -1,56 +1,42 @@
+import { Buffer } from "buffer";
+
 export interface ImageProcessingProvider {
 
   //------------------------------------------
   // Background Removal
   //------------------------------------------
 
-  /**
-   * Removes the background from an uploaded
-   * product image and returns a transparent PNG.
-   */
   removeBackground(
     image: File
-  ): Promise<Blob>;
+  ): Promise<Buffer>;
 
   //------------------------------------------
   // Image Composition
   //------------------------------------------
 
-  /**
-   * Places the original product onto a generated
-   * lifestyle background.
-   */
   compositeImages(
-    background: Blob,
-    foreground: Blob,
+    background: Buffer,
+    foreground: Buffer,
     options?: CompositeOptions
-  ): Promise<Blob>;
+  ): Promise<Buffer>;
 
   //------------------------------------------
   // Shadow Generation
   //------------------------------------------
 
-  /**
-   * Applies natural shadows so the composited
-   * product appears grounded in the scene.
-   */
   applyShadows(
-    image: Blob,
+    image: Buffer,
     options?: ShadowOptions
-  ): Promise<Blob>;
+  ): Promise<Buffer>;
 
   //------------------------------------------
   // Color Matching
   //------------------------------------------
 
-  /**
-   * Matches brightness, white balance, and color
-   * grading between foreground and background.
-   */
   matchLighting(
-    foreground: Blob,
-    background: Blob
-  ): Promise<Blob>;
+    foreground: Buffer,
+    background: Buffer
+  ): Promise<Buffer>;
 
 }
 

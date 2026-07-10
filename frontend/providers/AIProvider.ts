@@ -13,15 +13,34 @@ export interface AIProvider {
   readonly name: string;
 
   //------------------------------------------
-  // Creative Generation
+  // Lifestyle Image Generation
   //------------------------------------------
 
   /**
-   * Generate a completed creative image.
+   * Generate a lifestyle marketing image.
    */
   generateImage(
     brief: CreativeBrief
   ): Promise<CreativeAsset>;
+
+  //------------------------------------------
+  // Facebook Advertisement Generation
+  //------------------------------------------
+
+  /**
+   * Generate a Facebook advertisement.
+   *
+   * This is intentionally separate from the
+   * Lifestyle Image pipeline so each creative
+   * type can evolve independently.
+   */
+  generateFacebookAd(
+    brief: CreativeBrief
+  ): Promise<CreativeAsset>;
+
+  //------------------------------------------
+  // Video Generation
+  //------------------------------------------
 
   /**
    * Generate a video creative.

@@ -10,6 +10,10 @@ import {
 } from "../types/CompositeSceneSpecification";
 
 import {
+  AdCompositionSpecification,
+} from "../types/AdCompositionSpecification";
+
+import {
   buildAdComposition,
 } from "./buildAdComposition";
 
@@ -19,7 +23,7 @@ import {
 
 import {
   buildPresentationAnchor,
-} from "./presentationAnchorEngine";
+} from "./PresentationDirector";
 
 export function buildCompositeSceneSpecification(
   brief: CreativeBrief
@@ -29,7 +33,7 @@ export function buildCompositeSceneSpecification(
   // Advertisement Composition
   //------------------------------------------
 
-  const adComposition =
+  const adComposition: AdCompositionSpecification =
     buildAdComposition(
       brief
     );
@@ -81,6 +85,58 @@ export function buildCompositeSceneSpecification(
     );
 
   //------------------------------------------
+  // Reserved Product Area
+  //------------------------------------------
+
+  const reservedProductArea = {
+
+    x:
+      adComposition.presentationX,
+
+    y:
+      adComposition.presentationY,
+
+    width:
+      adComposition.presentationWidth,
+
+    height:
+      adComposition.presentationHeight,
+
+  };
+
+  //------------------------------------------
+  // Product Scale
+  //------------------------------------------
+
+  const productScale = {
+
+    minCoverage:
+      Math.max(
+        20,
+        Math.round(
+          adComposition.heroProductCoverage * 100 * 0.70
+        )
+      ),
+
+    idealCoverage:
+      Math.round(
+        adComposition.heroProductCoverage * 100
+      ),
+
+    maxCoverage:
+      Math.min(
+        60,
+        Math.round(
+          adComposition.heroProductCoverage * 100 * 1.20
+        )
+      ),
+
+    preserveAspectRatio:
+      true,
+
+  };
+
+  //------------------------------------------
   // Return
   //------------------------------------------
 
@@ -97,8 +153,10 @@ export function buildCompositeSceneSpecification(
       brief.strategy,
 
     //------------------------------------------
-    // EmmaOS 2.0
+    // Emma Advertisement Brain
     //------------------------------------------
+
+    adComposition,
 
     sceneComposition,
 
@@ -113,8 +171,7 @@ export function buildCompositeSceneSpecification(
 
     negativePrompt:
       "",
-
-    //------------------------------------------
+          //------------------------------------------
     // Product Placement
     //------------------------------------------
 
@@ -128,26 +185,10 @@ export function buildCompositeSceneSpecification(
       placement.alignment,
 
     //------------------------------------------
-    // Reserved Presentation Area
+    // Reserved Product Area
     //------------------------------------------
 
-    reservedProductArea: {
-
-      x:
-        presentationAnchor.centerX -
-        (presentationAnchor.width / 2),
-
-      y:
-        presentationAnchor.centerY -
-        (presentationAnchor.height / 2),
-
-      width:
-        presentationAnchor.width,
-
-      height:
-        presentationAnchor.height,
-
-    },
+    reservedProductArea,
 
     //------------------------------------------
     // Safe Margins
@@ -176,18 +217,7 @@ export function buildCompositeSceneSpecification(
     // Product Scaling
     //------------------------------------------
 
-    productScale: {
-
-      minCoverage: 18,
-
-      idealCoverage: 25,
-
-      maxCoverage: 35,
-
-      preserveAspectRatio:
-        true,
-
-    },
+    productScale,
 
     //------------------------------------------
     // Camera
@@ -196,7 +226,7 @@ export function buildCompositeSceneSpecification(
     cameraAngle,
 
     //------------------------------------------
-    // Compatibility Layer
+    // Environment
     //------------------------------------------
 
     environment:
@@ -223,14 +253,16 @@ export function buildCompositeSceneSpecification(
 
     subjects:
       sceneComposition.subjects.map(
-        subject =>
-          subject.description
+
+        subject => subject.description
+
       ),
 
     subjectActions:
       sceneComposition.subjects.map(
-        subject =>
-          subject.handPose
+
+        subject => subject.handPose
+
       ),
 
     emotionalTone:
@@ -254,10 +286,10 @@ export function buildCompositeSceneSpecification(
     //------------------------------------------
 
     preserveOriginalProduct:
-      brief.preservation.preserveOriginalProduct,
+      brief.preservation.preserveProduct,
 
     removeProductBackground:
-      brief.preservation.removeBackground,
+      brief.preservation.allowBackgroundChange,
 
     generateBackgroundOnly:
       true,
@@ -276,7 +308,17 @@ export function buildCompositeSceneSpecification(
 
       brief.story,
 
-      presentationAnchor.interaction,
+      adComposition.visualObjective,
+
+      adComposition.compositionIntent,
+
+      adComposition.photographerBrief,
+
+      adComposition.heroProductDescription,
+
+      adComposition.subjectPurpose,
+
+      adComposition.environmentPurpose,
 
       ...sceneComposition.constraints,
 
@@ -287,7 +329,6 @@ export function buildCompositeSceneSpecification(
   };
 
 }
-
 function determinePlacement(
   brief: CreativeBrief
 ): {
@@ -300,9 +341,12 @@ function determinePlacement(
 
 } {
 
-  switch (
-    brief.placementDirection.toLowerCase()
-  ) {
+  const direction =
+    brief.placementDirection
+      .toLowerCase()
+      .trim();
+
+  switch (direction) {
 
     case "left":
 
@@ -334,6 +378,21 @@ function determinePlacement(
 
       };
 
+    case "center":
+
+      return {
+
+        productPlacement:
+          "center",
+
+        intent:
+          "hero-product",
+
+        alignment:
+          "center",
+
+      };
+
     default:
 
       return {
@@ -342,7 +401,7 @@ function determinePlacement(
           "center",
 
         intent:
-          "gift-presented",
+          "hero-product",
 
         alignment:
           "center",
@@ -358,7 +417,12 @@ function determineCamera(
 ): CameraAngle {
 
   const framing =
-    brief.framing.toLowerCase();
+    brief.framing
+      .toLowerCase();
+
+  //------------------------------------------
+  // Advertisement Camera Selection
+  //------------------------------------------
 
   if (
     framing.includes("flat")
@@ -384,16 +448,24 @@ function determineCamera(
 
   }
 
+  //------------------------------------------
+  // Default
+  //------------------------------------------
+
   return "eye-level";
 
 }
-
 function determineLighting(
   brief: CreativeBrief
 ): LightingStyle {
 
   const lighting =
-    brief.lighting.toLowerCase();
+    brief.lighting
+      .toLowerCase();
+
+  //------------------------------------------
+  // Advertisement Lighting
+  //------------------------------------------
 
   if (
     lighting.includes("golden")
@@ -418,6 +490,10 @@ function determineLighting(
     return "soft-daylight";
 
   }
+
+  //------------------------------------------
+  // Default
+  //------------------------------------------
 
   return "warm-indoor";
 

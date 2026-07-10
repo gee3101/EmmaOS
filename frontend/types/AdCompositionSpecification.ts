@@ -34,6 +34,26 @@ export interface AdCompositionSpecification {
 
   objective: string;
 
+  /**
+   * High-level description of the advertisement.
+   * Example:
+   * "Premium Facebook advertisement designed around an invisible hero product."
+   */
+  visualObjective: string;
+
+  /**
+   * Overall creative intent.
+   * Example:
+   * "Create an aspirational lifestyle advertisement where every visual
+   * decision reinforces the hero product."
+   */
+  compositionIntent: string;
+
+  /**
+   * Overall creative direction for downstream prompt builders.
+   */
+  photographerBrief: string;
+
   //----------------------------------
   // Product
   //----------------------------------
@@ -46,6 +66,42 @@ export interface AdCompositionSpecification {
    * 0.45 = approximately 45% of the advertisement.
    */
   heroProductCoverage: number;
+
+  /**
+   * Describes how the invisible product should be treated.
+   */
+  heroProductDescription: string;
+
+  /**
+   * Product importance from 0–100.
+   * Intended for future weighting logic.
+   */
+  heroProductPriority: number;
+
+  /**
+   * Reserved breathing room around the product.
+   * Percentage of canvas.
+   */
+  breathingRoomPercent: number;
+
+  //----------------------------------
+  // Viewer Attention
+  //----------------------------------
+
+  /**
+   * Where the viewer should naturally look first.
+   */
+  viewerAttention: "product-first";
+
+  /**
+   * Ordered visual hierarchy.
+   */
+  visualHierarchy: string[];
+
+  /**
+   * Desired eye movement through the advertisement.
+   */
+  eyeFlow: string[];
 
   //----------------------------------
   // Scene
@@ -60,11 +116,55 @@ export interface AdCompositionSpecification {
   negativeSpace: NegativeSpace;
 
   //----------------------------------
+  // Subject Direction
+  //----------------------------------
+
+  /**
+   * Why the people exist in the composition.
+   */
+  subjectPurpose: string;
+
+  /**
+   * Where subjects should direct attention.
+   */
+  subjectFocus: "product";
+
+  /**
+   * How subjects should interact with the invisible product.
+   */
+  subjectInteraction: string;
+
+  //----------------------------------
+  // Environment
+  //----------------------------------
+
+  /**
+   * Why the environment exists.
+   */
+  environmentPurpose: string;
+
+  /**
+   * Overall scene complexity.
+   */
+  environmentComplexity:
+    | "minimal"
+    | "moderate"
+    | "rich";
+
+  /**
+   * Overall visual distraction level.
+   */
+  distractionLevel:
+    | "low"
+    | "medium"
+    | "high";
+
+  //----------------------------------
   // Presentation Area
   //----------------------------------
 
   /**
-   * Canvas percentages (0-100)
+   * Canvas percentages (0–100)
    */
 
   presentationX: number;
@@ -96,15 +196,7 @@ export interface AdCompositionSpecification {
   depthOfField: string;
 
   //----------------------------------
-  // Composition
-  //----------------------------------
-
-  visualHierarchy: string[];
-
-  eyeFlow: string[];
-
-  //----------------------------------
-  // Mobile
+  // Mobile Optimization
   //----------------------------------
 
   mobileOptimized: boolean;

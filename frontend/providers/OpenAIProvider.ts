@@ -8,49 +8,96 @@ export class OpenAIProvider implements AIProvider {
   readonly name = "OpenAI";
 
   //------------------------------------------
-  // Generate Image
+  // Lifestyle Image
   //------------------------------------------
 
   async generateImage(
     brief: CreativeBrief
   ): Promise<CreativeAsset> {
 
-    const formData = new FormData();
+    return this.generate(
+      "/api/generate-image",
+      brief
+    );
+
+  }
+
+  //------------------------------------------
+  // Facebook Advertisement
+  //------------------------------------------
+
+  async generateFacebookAd(
+    brief: CreativeBrief
+  ): Promise<CreativeAsset> {
+
+    return this.generate(
+      "/api/generate-facebook-ad",
+      brief
+    );
+
+  }
+
+  //------------------------------------------
+  // Shared Upload Logic
+  //------------------------------------------
+
+  private async generate(
+
+    endpoint: string,
+
+    brief: CreativeBrief
+
+  ): Promise<CreativeAsset> {
+
+    const formData =
+      new FormData();
 
     //------------------------------------------
-    // Add Creative Brief
+    // Creative Brief
     //------------------------------------------
 
     formData.append(
+
       "brief",
+
       JSON.stringify(brief)
+
     );
 
     //------------------------------------------
-    // Add Product Image
+    // Product Image
     //------------------------------------------
 
     if (brief.productImage) {
 
       formData.append(
+
         "productImage",
+
         brief.productImage
+
       );
 
     }
 
     //------------------------------------------
-    // Send Request
+    // Request
     //------------------------------------------
 
     const response =
-      await fetch("/api/generate-image", {
+      await fetch(
 
-        method: "POST",
+        endpoint,
 
-        body: formData,
+        {
 
-      });
+          method: "POST",
+
+          body: formData,
+
+        }
+
+      );
 
     const result =
       await response.json();
@@ -58,8 +105,11 @@ export class OpenAIProvider implements AIProvider {
     if (!response.ok || !result.success) {
 
       throw new Error(
+
         result.error ??
-        "Image generation failed."
+
+        "Generation failed."
+
       );
 
     }
@@ -69,7 +119,7 @@ export class OpenAIProvider implements AIProvider {
   }
 
   //------------------------------------------
-  // Generate Video
+  // Video
   //------------------------------------------
 
   async generateVideo(

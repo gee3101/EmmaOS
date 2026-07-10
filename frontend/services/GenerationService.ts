@@ -36,7 +36,7 @@ export class GenerationService {
   }
 
   //------------------------------------------
-  // Image Generation
+  // Lifestyle Image Generation
   //------------------------------------------
 
   async generateImage(
@@ -44,10 +44,30 @@ export class GenerationService {
   ): Promise<CreativeAsset> {
 
     console.log(
-      `[GenerationService] Image → ${this.provider.name}`
+      `[GenerationService] Lifestyle Image → ${this.provider.name}`
     );
 
-    return this.provider.generateImage(brief);
+    return this.provider.generateImage(
+      brief
+    );
+
+  }
+
+  //------------------------------------------
+  // Facebook Advertisement Generation
+  //------------------------------------------
+
+  async generateFacebookAd(
+    brief: CreativeBrief
+  ): Promise<CreativeAsset> {
+
+    console.log(
+      `[GenerationService] Facebook Advertisement → ${this.provider.name}`
+    );
+
+    return this.provider.generateFacebookAd(
+      brief
+    );
 
   }
 
@@ -63,12 +83,14 @@ export class GenerationService {
       `[GenerationService] Video → ${this.provider.name}`
     );
 
-    return this.provider.generateVideo(brief);
+    return this.provider.generateVideo(
+      brief
+    );
 
   }
 
   //------------------------------------------
-  // Future
+  // Creative Pack
   //------------------------------------------
 
   async generateCreativePack(
@@ -76,10 +98,14 @@ export class GenerationService {
   ): Promise<CreativeAsset[]> {
 
     const image =
-      await this.generateImage(brief);
+      await this.generateImage(
+        brief
+      );
 
     const video =
-      await this.generateVideo(brief);
+      await this.generateVideo(
+        brief
+      );
 
     return [
 

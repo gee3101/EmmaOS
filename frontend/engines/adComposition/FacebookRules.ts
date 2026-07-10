@@ -1,16 +1,41 @@
+import {
+  CameraDistance,
+  NegativeSpace,
+  SubjectScale,
+} from "../../types/AdCompositionSpecification";
+
+interface PlatformRules {
+
+  heroCoverage: number;
+
+  preferredCamera: CameraDistance;
+
+  preferredSubjectScale: SubjectScale;
+
+  preferredNegativeSpace: NegativeSpace;
+
+  mobileOptimized: boolean;
+
+  safeReadingDistance: boolean;
+
+  maxPeople: number;
+
+}
+
 export const FacebookRules = {
 
-    heroCoverage: 0.45,
+  heroCoverage: 0.45,
 
-    preferredCamera: "close",
+  preferredCamera: "close",
 
-    preferredSubjectScale: "medium",
+  preferredSubjectScale: "medium",
 
-    preferredNegativeSpace: "center",
+  preferredNegativeSpace: "center",
 
-    mobileOptimized: true,
+  mobileOptimized: true,
 
-    safeReadingDistance: true,
+  safeReadingDistance: true,
 
-    maxPeople: 2
-};
+  maxPeople: 2,
+
+} satisfies PlatformRules;

@@ -4,10 +4,6 @@ import {
   CompositeSceneSpecification,
 } from "../../../types/CompositeSceneSpecification";
 
-import {
-  buildBackgroundPrompt,
-} from "../../../engines/backgroundPromptBuilder";
-
 function createClient(): OpenAI {
 
   const apiKey =
@@ -40,13 +36,21 @@ export class OpenAIBackgroundService {
   ): Promise<Buffer> {
 
     //------------------------------------------
-    // Prompt
+    // Use Existing Prompt
     //------------------------------------------
 
     const prompt =
-      buildBackgroundPrompt(
-        scene
+      scene.backgroundPrompt;
+
+    if (!prompt) {
+
+      throw new Error(
+
+        "Scene backgroundPrompt was not provided."
+
       );
+
+    }
 
     //------------------------------------------
     // Logging
@@ -69,7 +73,7 @@ export class OpenAIBackgroundService {
     try {
 
       //------------------------------------------
-      // Generate
+      // Generate Background
       //------------------------------------------
 
       const response =
@@ -105,8 +109,11 @@ export class OpenAIBackgroundService {
       //------------------------------------------
 
       return Buffer.from(
+
         base64,
+
         "base64"
+
       );
 
     } catch (error) {

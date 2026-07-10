@@ -30,6 +30,9 @@ export default function GenerateButtons({
   const [generatingImage, setGeneratingImage] =
     useState(false);
 
+  const [generatingFacebookAd, setGeneratingFacebookAd] =
+    useState(false);
+
   const [generatingVideo, setGeneratingVideo] =
     useState(false);
 
@@ -68,7 +71,38 @@ export default function GenerateButtons({
   }
 
   //------------------------------------------
-  // Generate Video
+  // Facebook Advertisement
+  //------------------------------------------
+
+  async function handleGenerateFacebookAd() {
+
+    try {
+
+      setGeneratingFacebookAd(true);
+
+      const asset =
+        await generationService.generateFacebookAd(
+          brief
+        );
+
+      onAssetGenerated?.(asset);
+
+    } catch (err) {
+
+      console.error(err);
+
+      alert("Unable to generate Facebook advertisement.");
+
+    } finally {
+
+      setGeneratingFacebookAd(false);
+
+    }
+
+  }
+
+  //------------------------------------------
+  // Video Generation
   //------------------------------------------
 
   async function handleGenerateVideo() {
@@ -99,7 +133,7 @@ export default function GenerateButtons({
   }
 
   //------------------------------------------
-  // Generate Creative Pack
+  // Creative Pack
   //------------------------------------------
 
   async function handleGeneratePack() {
@@ -185,6 +219,16 @@ export default function GenerateButtons({
           {generatingImage
             ? "Generating Lifestyle Image..."
             : "🖼 Lifestyle Image"}
+        </button>
+
+        <button
+          onClick={handleGenerateFacebookAd}
+          disabled={generatingFacebookAd}
+          className="rounded-lg bg-indigo-600 px-5 py-3 font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+        >
+          {generatingFacebookAd
+            ? "Generating Facebook Advertisement..."
+            : "📣 Facebook Ad"}
         </button>
 
         <button
